@@ -7,7 +7,7 @@ export const FORM_PLACEHOLDER = {
   NAME: "Name",
   PHONE: "Phone",
   DATE: "Select Date",
-  Guest: "Guests",
+  GUEST: "Guests",
   TABLE: "Select Table",
   NOTE: "Add Note...",
   SAVE: "Save",

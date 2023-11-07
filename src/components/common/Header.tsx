@@ -50,7 +50,7 @@ const SBackButton = styled.div`
   border-radius: 10px;
   padding: 8px;
   box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.1);
-  background-color: #f2f2f2f3;
+  background-color: var(--gray-200);
 `;
 
 const STitle = styled.h1`

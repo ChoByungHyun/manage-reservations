@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 type Props = {
-  type?: "text" | undefined;
+  type?: "text" | "select" | undefined;
   placeholder?: string;
   label: string;
 };
 const Input: React.FC<Props> = ({ label, placeholder, type }) => {
   return (
     <SInputForm>
-      <label htmlFor="">{label}</label>
-      <SInput placeholder={placeholder} type={type}></SInput>
+      <label>{label}</label>
+      <SInput id={label} placeholder={placeholder} type={type}></SInput>
     </SInputForm>
   );
 };

@@ -27,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
     
     /* 컬러 변수 */
     --bg: #F2F2F2;
-    --gray-200: #DEDEDE;
+    --gray-200: #F2F2F2;
     --gray-400: #D2D2D2;
     --gray-600: #B4B4B4;
     --gray-700: #8F8F8F;
