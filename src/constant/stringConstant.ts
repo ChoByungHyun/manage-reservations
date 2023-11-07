@@ -4,8 +4,8 @@ export const HEADER_TITLE = {
   EDIT_PAGE: "Edit Reservation",
 };
 export const FORM_PLACEHOLDER = {
-  NAME: "name",
-  PHONE: "phone",
+  NAME: "Name",
+  PHONE: "Phone",
   DATE: "Select Date",
   Guest: "Guests",
   TABLE: "Select Table",
