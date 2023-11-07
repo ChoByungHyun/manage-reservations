@@ -26,6 +26,9 @@ const SLayout = styled.div`
     font-size: 20px;
     font-weight: bold;
   }
+  div:nth-child(1) {
+    color: var(--gray-800);
+  }
 `;
 const SIconLayout = styled.div`
   width: 40px;

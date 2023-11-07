@@ -8,6 +8,8 @@ import TextArea from "./form/TextArea";
 import ButtonGroup from "./form/ButtonGroup";
 import { MOCK_TABLE_DATA } from "constant/mockData";
 import SelectDateForm from "./modal/SelectDateForm";
+import CalendarIcon from "assets/event_available.svg";
+
 const CreateReservation = () => {
   const [isDateModal, setIsDateModal] = useState(false);
   function closeModal() {
@@ -16,7 +18,6 @@ const CreateReservation = () => {
   return (
     <SLayout>
       {isDateModal ? <SelectDateForm onClose={closeModal} /> : <></>}
-
       <SUserInfo>
         <Input
           placeholder={FORM_PLACEHOLDER.NAME}
@@ -30,7 +31,10 @@ const CreateReservation = () => {
         ></Input>
         <SInputLayout>
           <SInput onClick={() => setIsDateModal(true)}>
-            {FORM_PLACEHOLDER.DATE}
+            <div>
+              <img src={CalendarIcon} alt="" />
+              {FORM_PLACEHOLDER.DATE}
+            </div>
           </SInput>
         </SInputLayout>
       </SUserInfo>
@@ -53,14 +57,24 @@ const SInputLayout = styled.div`
   border-radius: 5px;
   align-self: center;
   flex: 1;
+  cursor: pointer;
 `;
 const SInput = styled.div`
   display: flex;
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 14px;
+    color: var(--gray-600);
+  }
 `;
 const SLayout = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 20px;
+  padding-bottom: 20px;
   gap: 40px;
 `;
 
