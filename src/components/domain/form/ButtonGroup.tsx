@@ -1,16 +1,20 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import DeleteIcon from "assets/trash.svg";
-const ButtonGroup = () => {
+type Props = {
+  onClose: () => void;
+};
+const ButtonGroup: React.FC<Props> = ({ onClose }) => {
   return (
     <SLayout>
       <SDeleteButton>
-        <img src={DeleteIcon} alt="휴지통" />
+        <img src={DeleteIcon} alt="휴지통" onClick={onClose} />
       </SDeleteButton>
       <SConfirmButton>Save</SConfirmButton>
     </SLayout>
   );
 };
+
 const SLayout = styled.div`
   display: flex;
   gap: 10px;

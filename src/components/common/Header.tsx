@@ -3,7 +3,6 @@ import styled from "styled-components";
 import BackButtonIcon from "assets/keyboard_backspace.svg";
 import AddButtonIcon from "assets/add.svg";
 import CloseButtonIcon from "assets/close.svg";
-import Button from "./Button";
 import { HEADER_TITLE, HEADER_TYPE } from "constant/stringConstant";
 
 type Props = {

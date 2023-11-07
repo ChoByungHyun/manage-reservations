@@ -7,7 +7,6 @@ const ReservationList = () => {
   return (
     <SGrayLayout>
       <Header pageType={HEADER_TYPE.LIST_PAGE} />
-      <div>list</div>
     </SGrayLayout>
   );
 };

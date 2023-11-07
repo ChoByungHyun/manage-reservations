@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 type Props = {
-  type?: "text" | "select" | undefined;
+  type?: "text" | "button" | undefined;
   placeholder?: string;
   label: string;
 };
