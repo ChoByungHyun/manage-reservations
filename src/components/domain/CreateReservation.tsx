@@ -10,7 +10,7 @@ import { MOCK_TABLE_DATA } from "constant/mockData";
 import SelectDateForm from "./modal/SelectDateForm";
 import CalendarIcon from "assets/event_available.svg";
 import { v4 as uuidv4 } from "uuid";
-import { UserInfo } from "types/userType";
+import { ReservationDate, UserInfo } from "types/userType";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -22,7 +22,10 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   const [userId, setUserId] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState<ReservationDate>({
+    time: "",
+    date: null,
+  });
   const [guest, setGuest] = useState(1);
   const [table, setTable] = useState({});
   const [note, setNote] = useState("");
@@ -69,7 +72,10 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     setGuest((prevGuest) => prevGuest + value);
   }
 
-  function saveDate() {}
+  function saveDate(date: ReservationDate) {
+    setDate(date);
+    closeModal();
+  }
 
   function handleUpdateNote(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setNote(event.target.value);
@@ -128,7 +134,11 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
 
   return (
     <SLayout>
-      {isDateModal ? <SelectDateForm onClose={closeModal} /> : <></>}
+      {isDateModal ? (
+        <SelectDateForm onClose={closeModal} onSave={saveDate} />
+      ) : (
+        <></>
+      )}
       <SUserInfo>
         <Input
           placeholder={FORM_PLACEHOLDER.NAME}

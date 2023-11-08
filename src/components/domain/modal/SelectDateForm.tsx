@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import TimerIcon from "assets/alarm_on.svg";
 import CalendarIcon from "assets/event_available.svg";
@@ -8,25 +8,31 @@ import { BUTTON_TYPE } from "constant/stringConstant";
 import Calendar from "../form/Calendar";
 
 import "react-datepicker/dist/react-datepicker.css"; // 스타일 시트를 임포트 합니다
+import { ReservationDate } from "types/userType";
+import { formatDate } from "util/formatDate";
 
 type Props = {
   onClose: () => void;
+  onSave: (date: ReservationDate) => void;
 };
-const SelectDateForm: React.FC<Props> = ({ onClose }) => {
+const SelectDateForm: React.FC<Props> = ({ onClose, onSave }) => {
   const [activeTab, setActiveTab] = useState("time");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date()); // 선택된 날짜를 관리하는 상태
-
   const [hour, setHour] = useState(0); // 시간 (0-11)
   const [minute, setMinute] = useState(0); // 분 (0-30)
   const [isPM, setIsPM] = useState(false); // AM 또는 PM
+  const [selectedTime, setSelectedTime] = useState<string>(""); // 선택된 시간을 관리하는 상태
 
-  // 시간 변경
+  useEffect(() => {
+    handleTimeChange();
+  }, [hour, minute, isPM]); // hour, minute, isPM 상태가 변경될 때마다 handleTimeChange 호출
+
+  // 시간 변경 후에 handleTimeChange 호출
   const changeHour = (change: number) => {
     const newHour = (hour + change) % 12;
     setHour(newHour < 0 ? newHour + 12 : newHour);
   };
 
-  // 분 변경 (30분 간격)
   const changeMinute = (change: number) => {
     const newMinute = minute + change * 30;
     if (newMinute < 0) {
@@ -40,13 +46,27 @@ const SelectDateForm: React.FC<Props> = ({ onClose }) => {
     }
   };
 
-  // AM/PM 변경
   const toggleAMPM = () => {
     setIsPM(!isPM);
   };
 
+  const handleTimeChange = () => {
+    // 시간 변경 시에 호출되는 함수
+    const time = `${hour === 0 ? 12 : hour}:${minute === 0 ? "00" : minute}:${
+      isPM ? "PM" : "AM"
+    }`;
+    setSelectedTime(time);
+  };
+
   const handleChange = (date: Date) => {
     setSelectedDate(date);
+  };
+  const handleSave = () => {
+    const date = {
+      date: formatDate(selectedDate),
+      time: selectedTime,
+    };
+    onSave(date);
   };
 
   return (
@@ -74,7 +94,11 @@ const SelectDateForm: React.FC<Props> = ({ onClose }) => {
             />
           )}
         </div>
-        <ButtonGroup onClose={onClose} buttonType={BUTTON_TYPE.SAVE_DELETE} />
+        <ButtonGroup
+          onSave={handleSave}
+          onClose={onClose}
+          buttonType={BUTTON_TYPE.SAVE_DELETE}
+        />
       </SLayout>
     </SModalBackGround>
   );
