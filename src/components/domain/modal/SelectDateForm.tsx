@@ -5,12 +5,16 @@ import CalendarIcon from "assets/event_available.svg";
 import ButtonGroup from "../form/ButtonGroup";
 import TimePicker from "./TimePicker";
 import { BUTTON_TYPE } from "constant/stringConstant";
+import Calendar from "../form/Calendar";
+
+import "react-datepicker/dist/react-datepicker.css"; // 스타일 시트를 임포트 합니다
+
 type Props = {
   onClose: () => void;
 };
 const SelectDateForm: React.FC<Props> = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState("time");
-  const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜를 관리하는 상태
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date()); // 선택된 날짜를 관리하는 상태
 
   const [hour, setHour] = useState(0); // 시간 (0-11)
   const [minute, setMinute] = useState(0); // 분 (0-30)
@@ -41,10 +45,10 @@ const SelectDateForm: React.FC<Props> = ({ onClose }) => {
     setIsPM(!isPM);
   };
 
-  // const handleDateSelect = (date) => {
-  //   // 달력에서 날짜를 선택했을 때의 핸들러
-  //   setSelectedDate(date);
-  // };
+  const handleChange = (date: Date) => {
+    setSelectedDate(date);
+  };
+
   return (
     <SModalBackGround>
       <SLayout>
@@ -56,12 +60,10 @@ const SelectDateForm: React.FC<Props> = ({ onClose }) => {
         </SInputForm>
         <SInputForm onClick={() => setActiveTab("calendar")}>
           <img src={CalendarIcon} alt="달력아이콘" />
-          <SInput
-            className={activeTab === "calendar" ? "active-tab" : ""}
-          ></SInput>
+          <Calendar activeTab={activeTab} onSelectDate={handleChange} />
         </SInputForm>
         <div>
-          {activeTab === "time" ? (
+          {activeTab === "time" && (
             <TimePicker
               hour={hour}
               minute={minute}
@@ -70,9 +72,6 @@ const SelectDateForm: React.FC<Props> = ({ onClose }) => {
               changeMinute={changeMinute}
               toggleAMPM={toggleAMPM}
             />
-          ) : (
-            <></>
-            // <Calendar onSelectDate={handleDateSelect} />
           )}
         </div>
         <ButtonGroup onClose={onClose} buttonType={BUTTON_TYPE.SAVE_DELETE} />
@@ -80,6 +79,7 @@ const SelectDateForm: React.FC<Props> = ({ onClose }) => {
     </SModalBackGround>
   );
 };
+
 const SModalStyle = css`
   width: 327px;
   position: fixed;
@@ -118,6 +118,7 @@ const SInput = styled.div`
     border: 1px solid var(--primary);
   }
 `;
+
 const SLayout = styled.div`
   ${SModalStyle}
 `;
