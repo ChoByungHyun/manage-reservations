@@ -30,14 +30,28 @@ const ReservationList = () => {
   );
 };
 const SCardLayout = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3개의 칼럼을 생성 */
+  gap: 10px; /* 그리드 아이템 간 간격 설정 */
   align-items: center;
-  justify-content: flex-start;
+  justify-items: start; /* 아이템을 좌측으로 정렬 */
   max-height: 70vh;
-  overflow: scroll;
+  overflow-y: scroll;
+  padding-left: 10px;
+  box-sizing: border-box;
+
+  width: 100%;
 `;
+// const SCardLayout = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 20px;
+//   align-items: center;
+//   justify-content: flex-start;
+//   max-height: 70vh;
+//   overflow: scroll;
+//   width: 100%;
+// `;
 const SGrayLayout = styled(SLayout)`
   background-color: var(--bg);
 `;
