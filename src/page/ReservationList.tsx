@@ -2,16 +2,28 @@ import Header from "components/common/Header";
 import ReservationCard from "components/domain/ReservationCard";
 import { MockUserData } from "constant/mockData";
 import { HEADER_TYPE } from "constant/stringConstant";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import SLayout from "styles/SLayout";
+import { UserInfo } from "types/userType";
 const ReservationList = () => {
+  const [userInfoArray, setUserInfoArray] = useState<UserInfo[]>([]);
+
+  useEffect(() => {
+    // 로컬 스토리지에서 데이터 가져오기
+    const storedData = localStorage.getItem("userInfo");
+
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setUserInfoArray(parsedData);
+    }
+  }, []);
   return (
     <SGrayLayout>
       <Header pageType={HEADER_TYPE.LIST_PAGE} />
       <SCardLayout>
-        {MockUserData.map((info, index) => {
-          return <ReservationCard info={info} key={info.id} />;
+        {userInfoArray.map((info) => {
+          return <ReservationCard key={info.id} userInfo={info} />;
         })}
       </SCardLayout>
     </SGrayLayout>
@@ -22,7 +34,7 @@ const SCardLayout = styled.div`
   flex-wrap: wrap;
   gap: 20px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   max-height: 70vh;
   overflow: scroll;
 `;

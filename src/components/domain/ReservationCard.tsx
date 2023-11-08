@@ -5,51 +5,48 @@ import PersonIcon from "assets/group.svg";
 import PhoneIcon from "assets/phone.svg";
 import NoteIcon from "assets/edit.svg";
 import ButtonGroup from "./form/ButtonGroup";
+import { useNavigate } from "react-router-dom";
+import { UserInfo } from "types/userType";
 interface Props {
-  info: {
-    name: string;
-    phone: string;
-    date: string;
-    person: string;
-    table: string;
-    floor: string;
-    note: string;
-  };
-  key: number;
+  userInfo: UserInfo;
 }
-const ReservationCard: React.FC<Props> = ({ info, key }) => {
+const ReservationCard: React.FC<Props> = ({ userInfo }) => {
+  const navigate = useNavigate();
+  function handleGoEditPage() {
+    navigate("/edit");
+  }
   return (
     <>
-      <SLayout key={key}>
+      <SLayout onClick={handleGoEditPage}>
         <SFlex>
           <STextAlign>
-            <div>{info.name}</div>
+            <div>{userInfo.name}</div>
             <SPhoneLayout>
               <img src={PhoneIcon} alt="" />
-              <div>{info.phone}</div>
+              <div>{userInfo.phone}</div>
             </SPhoneLayout>
           </STextAlign>
         </SFlex>
         <SFlex>
           <STextAlign>
             <img src={CalendarIcon} alt="" />
-            <div>{info.date}</div>
+            <div>{userInfo.date}</div>
           </STextAlign>
         </SFlex>
         <SFlex>
           <STextAlign>
             <img src={PersonIcon} alt="" />
 
-            <div>{info.person}</div>
+            <div>{userInfo.guest}</div>
           </STextAlign>
         </SFlex>
         <SFlex>
-          <div>{info.table}</div>
-          <div>{info.floor}</div>
+          {/* <div>{userInfo.table}</div> */}
+          {/* <div>{userInfo.floor}</div> */}
         </SFlex>
         <SFlex>
           <STextAlign>
-            <div>{info.note}</div>
+            <div>{userInfo.note}</div>
             <img src={NoteIcon} alt="" />
           </STextAlign>
         </SFlex>
@@ -91,6 +88,10 @@ const SLayout = styled(SFlex)`
   border-radius: 5px;
   box-sizing: border-box;
   width: 30%;
+  cursor: pointer;
+  &:hover {
+    scale: 1.02;
+  }
 `;
 
 export default ReservationCard;
