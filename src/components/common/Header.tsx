@@ -69,11 +69,6 @@ const SListTitle = styled(STitle)`
   padding-right: 120px;
 `;
 
-const SMainTitle = styled(STitle)`
-  flex: 1;
-  text-align: center;
-`;
-
 const SLayout = styled.div`
   display: flex;
   justify-content: space-between;

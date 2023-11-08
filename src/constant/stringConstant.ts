@@ -19,6 +19,7 @@ export const HEADER_TYPE = {
   EDIT_PAGE: "edit",
 };
 export const BUTTON_TYPE = {
-  SAVE: "Save",
+  ONLY_SAVE: "Save",
+  SAVE: "SaveAndDelete",
   SEATED: "Seated",
 };

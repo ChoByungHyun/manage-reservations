@@ -10,14 +10,22 @@ type Props = {
 const ButtonGroup: React.FC<Props> = ({ onClose, buttonType, onSave }) => {
   return (
     <SLayout>
-      <SDeleteButton onClick={onClose}>
-        <img src={DeleteIcon} alt="휴지통" />
-      </SDeleteButton>
-      <SConfirmButton onClick={onSave}>
-        {buttonType === BUTTON_TYPE.SAVE
-          ? BUTTON_TYPE.SAVE
-          : BUTTON_TYPE.SEATED}
-      </SConfirmButton>
+      {buttonType === BUTTON_TYPE.ONLY_SAVE ? (
+        <SConfirmButton onClick={onSave}>
+          {BUTTON_TYPE.ONLY_SAVE}
+        </SConfirmButton>
+      ) : (
+        <>
+          <SDeleteButton onClick={onClose}>
+            <img src={DeleteIcon} alt="휴지통" />
+          </SDeleteButton>
+          <SConfirmButton onClick={onSave}>
+            {buttonType === BUTTON_TYPE.SAVE
+              ? BUTTON_TYPE.SAVE
+              : BUTTON_TYPE.SEATED}
+          </SConfirmButton>
+        </>
+      )}
     </SLayout>
   );
 };
@@ -34,7 +42,8 @@ const SDeleteButton = styled.button`
 
   background-color: var(--gray-200);
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
-  img {
+  &:hover {
+    scale: 1.02;
   }
 `;
 const SConfirmButton = styled.button`
@@ -45,5 +54,8 @@ const SConfirmButton = styled.button`
   border-radius: 8px;
   color: white;
   font-size: 16px;
+  &:hover {
+    scale: 1.01;
+  }
 `;
 export default ButtonGroup;
