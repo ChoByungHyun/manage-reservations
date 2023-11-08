@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import TimerIcon from "assets/alarm_on.svg";
 import CalendarIcon from "assets/event_available.svg";
@@ -9,21 +9,73 @@ type Props = {
   onClose: () => void;
 };
 const SelectDateForm: React.FC<Props> = ({ onClose }) => {
+  const [activeTab, setActiveTab] = useState("time");
+  const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜를 관리하는 상태
+
+  const [hour, setHour] = useState(0); // 시간 (0-11)
+  const [minute, setMinute] = useState(0); // 분 (0-30)
+  const [isPM, setIsPM] = useState(false); // AM 또는 PM
+
+  // 시간 변경
+  const changeHour = (change: number) => {
+    const newHour = (hour + change) % 12;
+    setHour(newHour < 0 ? newHour + 12 : newHour);
+  };
+
+  // 분 변경 (30분 간격)
+  const changeMinute = (change: number) => {
+    const newMinute = minute + change * 30;
+    if (newMinute < 0) {
+      setMinute(30);
+      changeHour(-1);
+    } else if (newMinute >= 60) {
+      setMinute(0);
+      changeHour(1);
+    } else {
+      setMinute(newMinute);
+    }
+  };
+
+  // AM/PM 변경
+  const toggleAMPM = () => {
+    setIsPM(!isPM);
+  };
+
+  // const handleDateSelect = (date) => {
+  //   // 달력에서 날짜를 선택했을 때의 핸들러
+  //   setSelectedDate(date);
+  // };
   return (
     <SModalBackGround>
       <SLayout>
-        <SInputForm>
+        <SInputForm onClick={() => setActiveTab("time")}>
           <img src={TimerIcon} alt="시계아이콘" />
-          <SInput></SInput>
+          <SInput className={activeTab === "time" ? "active-tab" : ""}>{`${
+            hour === 0 ? 12 : hour
+          }:${minute === 0 ? "00" : minute}:${isPM ? "PM" : "AM"}`}</SInput>
         </SInputForm>
-        <SInputForm>
+        <SInputForm onClick={() => setActiveTab("calendar")}>
           <img src={CalendarIcon} alt="달력아이콘" />
-          <SInput></SInput>
+          <SInput
+            className={activeTab === "calendar" ? "active-tab" : ""}
+          ></SInput>
         </SInputForm>
         <div>
-          <TimePicker></TimePicker>
+          {activeTab === "time" ? (
+            <TimePicker
+              hour={hour}
+              minute={minute}
+              isPM={isPM}
+              changeHour={changeHour}
+              changeMinute={changeMinute}
+              toggleAMPM={toggleAMPM}
+            />
+          ) : (
+            <></>
+            // <Calendar onSelectDate={handleDateSelect} />
+          )}
         </div>
-        <ButtonGroup onClose={onClose} buttonType={BUTTON_TYPE.SAVE} />
+        <ButtonGroup onClose={onClose} buttonType={BUTTON_TYPE.SAVE_DELETE} />
       </SLayout>
     </SModalBackGround>
   );
@@ -57,9 +109,14 @@ const SModalBackGround = styled.div`
 
 const SInput = styled.div`
   flex: 1;
-  padding: 24px;
+  padding: 20px;
   border: 1px solid var(--gray-400);
   border-radius: 5px;
+  text-align: left;
+  cursor: pointer;
+  &.active-tab {
+    border: 1px solid var(--primary);
+  }
 `;
 const SLayout = styled.div`
   ${SModalStyle}

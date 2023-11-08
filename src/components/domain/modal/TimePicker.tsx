@@ -2,50 +2,41 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import UpArrow from "assets/chevron-up.svg";
 import DownArrow from "assets/chevron-down.svg";
-const TimePicker = () => {
-  const [hour, setHour] = useState(0); // 시간 (0-11)
-  const [minute, setMinute] = useState(0); // 분 (0-30)
-  const [isPM, setIsPM] = useState(false); // AM 또는 PM
+type Props = {
+  hour: number;
+  minute: number;
+  isPM: boolean;
+  changeHour: (change: number) => void;
+  changeMinute: (change: number) => void;
+  toggleAMPM: () => void;
+};
 
-  // 시간 증가
-  const incrementHour = () => {
-    setHour((hour + 1) % 12);
-  };
-
-  // 분 증가 (30분 간격)
-  const incrementMinute = () => {
-    if (minute === 30) {
-      // 30분 단위로 변경하고 시간 업데이트
-      setMinute(0);
-      setHour((hour + 1) % 12);
-    } else {
-      setMinute(minute + 30);
-    }
-  };
-
-  // AM/PM 변경
-  const toggleAMPM = () => {
-    setIsPM(!isPM);
-  };
-
+const TimePicker: React.FC<Props> = ({
+  hour,
+  minute,
+  isPM,
+  changeHour,
+  changeMinute,
+  toggleAMPM,
+}) => {
   return (
     <SLayout>
       <STimeArrow>
-        <button onClick={incrementHour}>
+        <button onClick={() => changeHour(1)}>
           <img src={UpArrow} alt="" />
         </button>
         {hour === 0 ? "12" : hour}
-        <button onClick={incrementHour}>
+        <button onClick={() => changeHour(-1)}>
           <img src={DownArrow} alt="" />
         </button>
       </STimeArrow>
       <div> : </div>
       <STimeArrow>
-        <button onClick={incrementMinute}>
+        <button onClick={() => changeMinute(1)}>
           <img src={UpArrow} alt="" />
         </button>
         {minute === 0 ? "00" : minute}
-        <button onClick={incrementMinute}>
+        <button onClick={() => changeMinute(-1)}>
           <img src={DownArrow} alt="" />
         </button>
       </STimeArrow>
