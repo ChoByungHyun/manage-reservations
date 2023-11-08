@@ -4,12 +4,26 @@ type Props = {
   type?: "text" | "button" | undefined;
   placeholder?: string;
   label: string;
+  value?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
 };
-const Input: React.FC<Props> = ({ label, placeholder, type }) => {
+const Input: React.FC<Props> = ({
+  label,
+  placeholder,
+  type,
+  value,
+  onChange,
+}) => {
   return (
     <SInputForm>
       <label>{label}</label>
-      <SInput id={label} placeholder={placeholder} type={type}></SInput>
+      <SInput
+        id={label}
+        placeholder={placeholder}
+        type={type}
+        value={value}
+        onChange={onChange}
+      ></SInput>
     </SInputForm>
   );
 };

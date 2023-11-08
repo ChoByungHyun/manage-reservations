@@ -2,11 +2,18 @@ import { FORM_PLACEHOLDER } from "constant/stringConstant";
 import React from "react";
 import styled from "styled-components";
 import NoteIcon from "assets/edit.svg";
-
-const TextArea = () => {
+type Props = {
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+};
+const TextArea: React.FC<Props> = ({ value, onChange }) => {
   return (
     <SLayout>
-      <STextarea placeholder={FORM_PLACEHOLDER.NOTE} />
+      <STextarea
+        placeholder={FORM_PLACEHOLDER.NOTE}
+        value={value}
+        onChange={onChange}
+      />
       <SImage src={NoteIcon} alt="이미지" />
     </SLayout>
   );
