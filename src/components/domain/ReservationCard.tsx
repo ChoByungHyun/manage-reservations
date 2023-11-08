@@ -12,12 +12,12 @@ interface Props {
 }
 const ReservationCard: React.FC<Props> = ({ userInfo }) => {
   const navigate = useNavigate();
-  function handleGoEditPage() {
-    navigate("/edit");
+  function handleGoEditPage(userInfo: UserInfo) {
+    navigate("/edit", { state: userInfo });
   }
   return (
     <>
-      <SLayout onClick={handleGoEditPage}>
+      <SLayout onClick={() => handleGoEditPage(userInfo)}>
         <SFlex>
           <STextAlign>
             <div>{userInfo.name}</div>
@@ -82,16 +82,13 @@ const SFlex = styled.div`
 `;
 const SLayout = styled(SFlex)`
   flex-direction: column;
+  width: 95%;
   gap: 3px;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
   background-color: white;
   border-radius: 5px;
   box-sizing: border-box;
-  width: 30%;
   cursor: pointer;
-  &:hover {
-    scale: 1.02;
-  }
 `;
 
 export default ReservationCard;

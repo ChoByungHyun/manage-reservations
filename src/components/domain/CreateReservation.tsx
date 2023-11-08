@@ -12,9 +12,13 @@ import CalendarIcon from "assets/event_available.svg";
 import { v4 as uuidv4 } from "uuid";
 import { UserInfo } from "types/userType";
 
-interface Props {}
-const CreateReservation: React.FC<Props> = ({}) => {
+interface Props {
+  userInfo?: UserInfo;
+}
+const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   const [isDateModal, setIsDateModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [userId, setUserId] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [date, setDate] = useState("");
@@ -32,6 +36,20 @@ const CreateReservation: React.FC<Props> = ({}) => {
       setUserInfoArray(parsedData);
     }
   }, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      //props로 userInfo가 있을 경우(편집)
+      setIsEditMode(true);
+      setUserId(userInfo.id);
+      setName(userInfo.name);
+      setPhone(userInfo.phone);
+      setDate(userInfo.date);
+      setGuest(userInfo.guest);
+      setTable(userInfo.table);
+      setNote(userInfo.note);
+    }
+  }, [userInfo]);
 
   useEffect(() => {
     //userInfoArray 변경 시 로컬 스토리지에 저장
@@ -72,8 +90,19 @@ const CreateReservation: React.FC<Props> = ({}) => {
       table,
       note,
     };
-
-    setUserInfoArray((prev) => [...prev, userInfoData]);
+    if (isEditMode) {
+      //편집일 경우
+      setUserInfoArray((prev) =>
+        prev.map((userInfo) => {
+          if (userInfo.id === userId) {
+            return { ...userInfo, ...userInfoData };
+          }
+          return userInfo;
+        })
+      );
+    } else {
+      setUserInfoArray((prev) => [...prev, userInfoData]);
+    }
   }
 
   return (
@@ -110,7 +139,7 @@ const CreateReservation: React.FC<Props> = ({}) => {
       <TextArea value={note} onChange={handleUpdateNote} />
       <ButtonGroup
         onClose={closeModal}
-        buttonType={BUTTON_TYPE.SAVE}
+        buttonType={isEditMode ? BUTTON_TYPE.SEATED : BUTTON_TYPE.ONLY_SAVE}
         onSave={storageSaveUserInfo}
       />
     </SLayout>
