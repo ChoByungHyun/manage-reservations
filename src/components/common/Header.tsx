@@ -25,7 +25,7 @@ const Header = ({ pageType }: Props) => {
             <SImgButton src={AddButtonIcon} aria-label="예약생성"></SImgButton>
             <SCreateButton>{HEADER_TITLE.CREATE_PAGE}</SCreateButton>
           </SBackButton>
-          <SMainTitle aria-label="폼 제목">{HEADER_TITLE.LIST_PAGE}</SMainTitle>
+          <SListTitle aria-label="폼 제목">{HEADER_TITLE.LIST_PAGE}</SListTitle>
         </>
       ) : pageType === HEADER_TYPE.CREATE_PAGE ? (
         <>
@@ -64,6 +64,11 @@ const SBackButton = styled.div`
 const STitle = styled.h1`
   font-size: 24px;
 `;
+
+const SListTitle = styled(STitle)`
+  padding-right: 120px;
+`;
+
 const SMainTitle = styled(STitle)`
   flex: 1;
   text-align: center;

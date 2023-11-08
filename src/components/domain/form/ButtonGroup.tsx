@@ -1,16 +1,23 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import DeleteIcon from "assets/trash.svg";
+import { BUTTON_TYPE } from "constant/stringConstant";
 type Props = {
   onClose?: () => void;
+  buttonType?: string;
+  onSave?: () => void;
 };
-const ButtonGroup: React.FC<Props> = ({ onClose }) => {
+const ButtonGroup: React.FC<Props> = ({ onClose, buttonType, onSave }) => {
   return (
     <SLayout>
-      <SDeleteButton>
-        <img src={DeleteIcon} alt="휴지통" onClick={onClose} />
+      <SDeleteButton onClick={onClose}>
+        <img src={DeleteIcon} alt="휴지통" />
       </SDeleteButton>
-      <SConfirmButton>Save</SConfirmButton>
+      <SConfirmButton onClick={onSave}>
+        {buttonType === BUTTON_TYPE.SAVE
+          ? BUTTON_TYPE.SAVE
+          : BUTTON_TYPE.SEATED}
+      </SConfirmButton>
     </SLayout>
   );
 };

@@ -4,6 +4,7 @@ import TimerIcon from "assets/alarm_on.svg";
 import CalendarIcon from "assets/event_available.svg";
 import ButtonGroup from "../form/ButtonGroup";
 import TimePicker from "./TimePicker";
+import { BUTTON_TYPE } from "constant/stringConstant";
 type Props = {
   onClose: () => void;
 };
@@ -22,7 +23,7 @@ const SelectDateForm: React.FC<Props> = ({ onClose }) => {
         <div>
           <TimePicker></TimePicker>
         </div>
-        <ButtonGroup onClose={onClose} />
+        <ButtonGroup onClose={onClose} buttonType={BUTTON_TYPE.SAVE} />
       </SLayout>
     </SModalBackGround>
   );

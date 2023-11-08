@@ -11,9 +11,14 @@ export const FORM_PLACEHOLDER = {
   TABLE: "Select Table",
   NOTE: "Add Note...",
   SAVE: "Save",
+  SEATED: "Seated",
 };
 export const HEADER_TYPE = {
   LIST_PAGE: "list",
   CREATE_PAGE: "create",
   EDIT_PAGE: "edit",
+};
+export const BUTTON_TYPE = {
+  SAVE: "Save",
+  SEATED: "Seated",
 };
