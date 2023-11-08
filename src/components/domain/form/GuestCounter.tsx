@@ -3,16 +3,19 @@ import styled from "styled-components";
 import plusIcon from "assets/math-plus.svg";
 import minusIcon from "assets/math-minus.svg";
 import { FORM_PLACEHOLDER } from "constant/stringConstant";
-
-const GuestCounter = () => {
+type Props = {
+  onCount: (value: number) => void;
+  guest: number;
+};
+const GuestCounter: React.FC<Props> = ({ onCount, guest }) => {
   return (
     <SLayout>
       <div>{FORM_PLACEHOLDER.GUEST}</div>
-      <SIconLayout>
+      <SIconLayout onClick={() => onCount(-1)}>
         <img src={minusIcon} alt="마이너스 아이콘" />
       </SIconLayout>
-      <p>1</p>
-      <SIconLayout>
+      <p>{guest}</p>
+      <SIconLayout onClick={() => onCount(1)}>
         <img src={plusIcon} alt="플러스 아이콘" />
       </SIconLayout>
     </SLayout>
