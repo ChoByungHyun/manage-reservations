@@ -20,6 +20,6 @@ export const HEADER_TYPE = {
 };
 export const BUTTON_TYPE = {
   ONLY_SAVE: "Save",
-  SAVE: "SaveAndDelete",
+  SAVE_DELETE: "SaveAndDelete",
   SEATED: "Seated",
 };

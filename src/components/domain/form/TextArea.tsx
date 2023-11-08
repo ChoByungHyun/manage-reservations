@@ -34,6 +34,10 @@ const STextarea = styled.textarea`
   border-radius: 5px;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
   height: 200px;
+  &:focus {
+    border-color: var(--primary);
+    outline: none;
+  }
 `;
 
 const SImage = styled.img`

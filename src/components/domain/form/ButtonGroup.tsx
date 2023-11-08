@@ -28,12 +28,16 @@ const ButtonGroup: React.FC<Props> = ({
         </SConfirmButton>
       ) : (
         <>
-          <SDeleteButton onClick={handleDelete}>
+          <SDeleteButton
+            onClick={
+              buttonType === BUTTON_TYPE.SAVE_DELETE ? onClose : handleDelete
+            }
+          >
             <img src={DeleteIcon} alt="휴지통" />
           </SDeleteButton>
           <SConfirmButton onClick={onSave}>
-            {buttonType === BUTTON_TYPE.SAVE
-              ? BUTTON_TYPE.SAVE
+            {buttonType === BUTTON_TYPE.SAVE_DELETE
+              ? BUTTON_TYPE.ONLY_SAVE
               : BUTTON_TYPE.SEATED}
           </SConfirmButton>
         </>
