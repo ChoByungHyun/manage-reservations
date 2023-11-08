@@ -75,6 +75,22 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     setNote(event.target.value);
   }
 
+  const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    let value = e.target.value.replace(/\D/g, ""); // 숫자가 아닌 것들을 제거
+    if (value.length > 11) {
+      value = value.slice(0, 11); // 입력값을 11자리로 제한
+    }
+
+    // 숫자를 그룹으로 나누어 각 그룹 사이에 하이픈을 추가
+    if (value.length > 8) {
+      value = value.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3");
+    } else if (value.length > 4) {
+      value = value.replace(/(\d{3})(\d+)/, "$1-$2");
+    }
+
+    setPhone(value);
+  };
+
   async function storageSaveUserInfo() {
     //Save Button 눌렀을 때 객체형태로 Array저장하는 함수
     const uniqueID = uuidv4();
@@ -123,10 +139,10 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
         ></Input>
         <Input
           placeholder={FORM_PLACEHOLDER.PHONE}
-          type="text"
+          type="tel"
           label={FORM_PLACEHOLDER.PHONE}
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={(e) => handlePhoneInput(e)}
         ></Input>
         <SInputLayout onClick={() => setIsDateModal(true)}>
           <SInput>
