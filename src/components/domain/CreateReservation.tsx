@@ -11,6 +11,7 @@ import SelectDateForm from "./modal/SelectDateForm";
 import CalendarIcon from "assets/event_available.svg";
 import { v4 as uuidv4 } from "uuid";
 import { UserInfo } from "types/userType";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   userInfo?: UserInfo;
@@ -26,6 +27,8 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   const [table, setTable] = useState({});
   const [note, setNote] = useState("");
   const [userInfoArray, setUserInfoArray] = useState<UserInfo[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 로컬 스토리지에서 데이터 가져오기
@@ -51,11 +54,6 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     }
   }, [userInfo]);
 
-  useEffect(() => {
-    //userInfoArray 변경 시 로컬 스토리지에 저장
-    localStorage.setItem("userInfo", JSON.stringify(userInfoArray));
-  }, [userInfoArray]);
-
   function closeModal() {
     //모달 닫는 함수
     setIsDateModal(false);
@@ -77,7 +75,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     setNote(event.target.value);
   }
 
-  function storageSaveUserInfo() {
+  async function storageSaveUserInfo() {
     //Save Button 눌렀을 때 객체형태로 Array저장하는 함수
     const uniqueID = uuidv4();
 
@@ -90,19 +88,26 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
       table,
       note,
     };
-    if (isEditMode) {
-      //편집일 경우
-      setUserInfoArray((prev) =>
-        prev.map((userInfo) => {
+    setUserInfoArray((prev) => {
+      let updatedArray;
+      if (isEditMode) {
+        //편집일 경우
+        updatedArray = prev.map((userInfo) => {
           if (userInfo.id === userId) {
             return { ...userInfo, ...userInfoData };
           }
           return userInfo;
-        })
-      );
-    } else {
-      setUserInfoArray((prev) => [...prev, userInfoData]);
-    }
+        });
+      } else {
+        updatedArray = [...prev, userInfoData];
+      }
+
+      localStorage.setItem("userInfo", JSON.stringify(updatedArray));
+      return updatedArray;
+    });
+    // 상태 || 스토리지 업데이트 전 navigate 이슈로 추가
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    navigate("/");
   }
 
   return (

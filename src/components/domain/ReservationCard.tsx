@@ -9,8 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { UserInfo } from "types/userType";
 interface Props {
   userInfo: UserInfo;
+  onDelete: (id: string) => void;
 }
-const ReservationCard: React.FC<Props> = ({ userInfo }) => {
+const ReservationCard: React.FC<Props> = ({ userInfo, onDelete }) => {
   const navigate = useNavigate();
   function handleGoEditPage(userInfo: UserInfo) {
     navigate("/edit", { state: userInfo });
@@ -51,7 +52,7 @@ const ReservationCard: React.FC<Props> = ({ userInfo }) => {
           </STextAlign>
         </SFlex>
         <SButtonGroup>
-          <ButtonGroup />
+          <ButtonGroup onDelete={onDelete} userId={userInfo.id} />
         </SButtonGroup>
       </SLayout>
     </>

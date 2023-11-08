@@ -6,8 +6,20 @@ type Props = {
   onClose?: () => void;
   buttonType?: string;
   onSave?: () => void;
+  onDelete?: (id: string) => void;
+  userId?: string;
 };
-const ButtonGroup: React.FC<Props> = ({ onClose, buttonType, onSave }) => {
+const ButtonGroup: React.FC<Props> = ({
+  onClose,
+  buttonType,
+  onSave,
+  onDelete,
+  userId,
+}) => {
+  function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    onDelete && userId && onDelete(userId);
+  }
   return (
     <SLayout>
       {buttonType === BUTTON_TYPE.ONLY_SAVE ? (
@@ -16,7 +28,7 @@ const ButtonGroup: React.FC<Props> = ({ onClose, buttonType, onSave }) => {
         </SConfirmButton>
       ) : (
         <>
-          <SDeleteButton onClick={onClose}>
+          <SDeleteButton onClick={handleDelete}>
             <img src={DeleteIcon} alt="휴지통" />
           </SDeleteButton>
           <SConfirmButton onClick={onSave}>

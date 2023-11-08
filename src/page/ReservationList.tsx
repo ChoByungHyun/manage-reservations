@@ -10,7 +10,6 @@ const ReservationList = () => {
   const [userInfoArray, setUserInfoArray] = useState<UserInfo[]>([]);
 
   useEffect(() => {
-    // 로컬 스토리지에서 데이터 가져오기
     const storedData = localStorage.getItem("userInfo");
 
     if (storedData) {
@@ -18,12 +17,29 @@ const ReservationList = () => {
       setUserInfoArray(parsedData);
     }
   }, []);
+
+  useEffect(() => {
+    //삭제 후 업데이트
+    localStorage.setItem("userInfo", JSON.stringify(userInfoArray));
+  }, [userInfoArray]);
+
+  function handleDeleteReservation(id: string) {
+    //예약카드 삭제하는 함수
+    setUserInfoArray((prev) => prev.filter((userInfo) => userInfo.id !== id));
+  }
+
   return (
     <SGrayLayout>
       <Header pageType={HEADER_TYPE.LIST_PAGE} />
       <SCardLayout>
         {userInfoArray.map((info) => {
-          return <ReservationCard key={info.id} userInfo={info} />;
+          return (
+            <ReservationCard
+              key={info.id}
+              userInfo={info}
+              onDelete={handleDeleteReservation}
+            />
+          );
         })}
       </SCardLayout>
     </SGrayLayout>
@@ -42,16 +58,7 @@ const SCardLayout = styled.div`
 
   width: 100%;
 `;
-// const SCardLayout = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-//   gap: 20px;
-//   align-items: center;
-//   justify-content: flex-start;
-//   max-height: 70vh;
-//   overflow: scroll;
-//   width: 100%;
-// `;
+
 const SGrayLayout = styled(SLayout)`
   background-color: var(--bg);
 `;
