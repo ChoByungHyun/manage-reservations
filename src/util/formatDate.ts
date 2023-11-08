@@ -1,0 +1,21 @@
+export const formatDate = (date: Date) => {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const month = months[date.getMonth()];
+  const day = date.getDate();
+
+  return `${month.substring(0, 3)} ${day < 10 ? "0" + day : day}`; // 월의 이름을 약어로 변환하고, 일이 한 자리수일 경우 앞에 0을 붙여줍니다
+};
