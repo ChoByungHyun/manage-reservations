@@ -81,9 +81,9 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
         >
           <div className="floating-label">{FORM_PLACEHOLDER.TABLE}</div>
           {selectedItems.length > 0 ? (
-            selectedItems.map((item) => (
+            selectedItems.map((item, index) => (
               <TableTagButton
-                key={item.table}
+                key={index}
                 text={` ${TABLE_INFO.TABLE}${item.table} ${DOT} ${TABLE_INFO.FLOOR} ${item.floor} `}
                 showCloseButton
                 onClick={handleTagClick(item)}
@@ -99,8 +99,9 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
       </SButton>
 
       <SDropdownList $isOpen={isDropdownOpen}>
-        {items.map((item) => (
+        {items.map((item, index) => (
           <TableTagButton
+            key={index}
             text={` ${TABLE_INFO.TABLE} ${item.table} ${DOT} ${TABLE_INFO.FLOOR} ${item.floor} `}
             active={selectedItems.some(
               (selectedItem) => selectedItem.table === item.table

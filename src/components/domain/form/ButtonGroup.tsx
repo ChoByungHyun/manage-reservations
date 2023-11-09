@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import DeleteIcon from "assets/trash.svg";
 import { BUTTON_TYPE } from "constant/stringConstant";
+import { useReservation } from "hook/useReservation";
+import { useNavigate } from "react-router-dom";
 type Props = {
   onClose?: () => void;
   buttonType?: string;
   onSave?: () => void;
   onDelete?: (id: string) => void;
   userId?: string;
+  onSeated?: (id: string) => void;
+  isEditMode?: boolean;
 };
 const ButtonGroup: React.FC<Props> = ({
   onClose,
@@ -15,30 +19,49 @@ const ButtonGroup: React.FC<Props> = ({
   onSave,
   onDelete,
   userId,
+  onSeated,
+  isEditMode,
 }) => {
+  const navigate = useNavigate();
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
+    console.log("delete");
     e.stopPropagation();
+    // userId && handleDeleteReservation(userId);
     onDelete && userId && onDelete(userId);
   }
+  async function hadleEditDelete(e: React.MouseEvent<HTMLButtonElement>) {
+    handleDelete(e);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  }
+  function handleSeated(e: React.MouseEvent<HTMLButtonElement>) {
+    console.log("seated");
+
+    e.stopPropagation();
+    onSeated && userId && onSeated(userId);
+  }
+
   return (
     <SLayout>
       {buttonType === BUTTON_TYPE.ONLY_SAVE ? (
         <SConfirmButton onClick={onSave}>
           {BUTTON_TYPE.ONLY_SAVE}
         </SConfirmButton>
-      ) : (
+      ) : buttonType === BUTTON_TYPE.SAVE_DELETE ? (
         <>
-          <SDeleteButton
-            onClick={
-              buttonType === BUTTON_TYPE.SAVE_DELETE ? onClose : handleDelete
-            }
-          >
+          <SDeleteButton onClick={onClose}>
             <img src={DeleteIcon} alt="휴지통" />
           </SDeleteButton>
           <SConfirmButton onClick={onSave}>
-            {buttonType === BUTTON_TYPE.SAVE_DELETE
-              ? BUTTON_TYPE.ONLY_SAVE
-              : BUTTON_TYPE.SEATED}
+            {BUTTON_TYPE.ONLY_SAVE}
+          </SConfirmButton>
+        </>
+      ) : (
+        <>
+          <SDeleteButton onClick={isEditMode ? hadleEditDelete : handleDelete}>
+            <img src={DeleteIcon} alt="휴지통" />
+          </SDeleteButton>
+          <SConfirmButton onClick={isEditMode ? onSave : onSave}>
+            {BUTTON_TYPE.SEATED}
           </SConfirmButton>
         </>
       )}
