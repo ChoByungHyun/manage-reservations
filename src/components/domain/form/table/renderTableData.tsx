@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const DOT = "•";
 
-const renderTableData = (tableInfo: TableInfo[]) => {
+const RenderTableData = (tableInfo: TableInfo[]) => {
   const floorTableMap = tableInfo.reduce((acc, curr) => {
     if (!acc[curr.floor]) {
       acc[curr.floor] = [];
@@ -38,4 +38,4 @@ const SFloorNumber = styled.span`
   /* font-weight: bold; */
 `;
 
-export default renderTableData;
+export default RenderTableData;

@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 import DeleteIcon from "assets/trash.svg";
 import { BUTTON_TYPE } from "constant/stringConstant";
-import { useReservation } from "hook/useReservation";
-import { useNavigate } from "react-router-dom";
 type Props = {
   onClose?: () => void;
   buttonType?: string;

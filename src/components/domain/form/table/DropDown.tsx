@@ -4,7 +4,7 @@ import ArrowIcon from "assets/arrow_drop_down.svg";
 import { FORM_PLACEHOLDER, TABLE_INFO } from "constant/stringConstant";
 import TableTagButton from "./TableTagButton";
 import { TableInfo } from "types/userType";
-import { DOT } from "components/domain/form/table/renderTableData";
+import { DOT } from "components/domain/form/table/RenderTableData";
 
 type DropdownProps = {
   items: TableInfo[];
