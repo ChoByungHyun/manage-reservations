@@ -16,11 +16,22 @@ type Props = {
   onSave: (date: ReservationDate) => void;
 };
 const SelectDateForm: React.FC<Props> = ({ onClose, onSave }) => {
+  let now = new Date(); // 현재 시간을 가져옴
+  let currentHour = now.getHours();
+  let currentMinute = now.getMinutes();
+
+  if (currentMinute < 30) {
+    currentMinute += 30; // 현재 분이 30분 미만이면 30분을 더함
+  } else {
+    currentHour += 1; // 현재 분이 30분 이상이면 시간을 1시간 늘림
+    currentMinute = 0; // 분은 0으로 설정
+  }
+
   const [activeTab, setActiveTab] = useState("time");
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date()); // 선택된 날짜를 관리하는 상태
-  const [hour, setHour] = useState(0); // 시간 (0-11)
-  const [minute, setMinute] = useState(0); // 분 (0-30)
-  const [isPM, setIsPM] = useState(false); // AM 또는 PM
+  const [selectedDate, setSelectedDate] = useState<Date>(now); // 선택된 날짜를 관리하는 상태
+  const [hour, setHour] = useState(currentHour % 12 || 12); // 시간 (0-11)
+  const [minute, setMinute] = useState(Math.floor(currentMinute / 30) * 30); // 분 (0-30)
+  const [isPM, setIsPM] = useState(currentHour >= 12); // AM 또는 PM
   const [selectedTime, setSelectedTime] = useState<string>(""); // 선택된 시간을 관리하는 상태
 
   useEffect(() => {

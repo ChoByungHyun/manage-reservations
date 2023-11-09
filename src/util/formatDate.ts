@@ -13,6 +13,18 @@ export const formatDate = (date: Date) => {
     "November",
     "December",
   ];
+  const isToday = (date: Date) => {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+
+  if (isToday(date)) {
+    return "Today";
+  }
 
   const month = months[date.getMonth()];
   const day = date.getDate();

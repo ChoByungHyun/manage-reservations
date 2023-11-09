@@ -31,7 +31,7 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete }) => {
         <SFlex>
           <STextAlign>
             <img src={CalendarIcon} alt="" />
-            {/* <div>{userInfo.date.date}, </div> */}
+            <div>{userInfo.date.date}, </div>
             <div>{userInfo.date.time}</div>
           </STextAlign>
         </SFlex>
