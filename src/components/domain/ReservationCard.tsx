@@ -7,6 +7,8 @@ import NoteIcon from "assets/edit.svg";
 import ButtonGroup from "./form/ButtonGroup";
 import { useNavigate } from "react-router-dom";
 import { UserInfo } from "types/userType";
+import renderTableData from "components/domain/form/table/renderTableData";
+import { TABLE_INFO } from "constant/stringConstant";
 interface Props {
   userInfo: UserInfo;
   onDelete: (id: string) => void;
@@ -21,7 +23,7 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete }) => {
       <SLayout onClick={() => handleGoEditPage(userInfo)}>
         <SFlex>
           <STextAlign>
-            <div>{userInfo.name}</div>
+            <SUserName>{userInfo.name}</SUserName>
             <SPhoneLayout>
               <img src={PhoneIcon} alt="" />
               <div>{userInfo.phone}</div>
@@ -31,20 +33,27 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete }) => {
         <SFlex>
           <STextAlign>
             <img src={CalendarIcon} alt="" />
-            <div>{userInfo.date.date}, </div>
-            <div>{userInfo.date.time}</div>
+            <SDateText>{userInfo.date.date}, </SDateText>
+            <SDateText>{userInfo.date.time}</SDateText>
           </STextAlign>
         </SFlex>
         <SFlex>
           <STextAlign>
             <img src={PersonIcon} alt="" />
-
-            <div>{userInfo.guest}</div>
+            <SGuestCount>{userInfo.guest}</SGuestCount>
           </STextAlign>
         </SFlex>
         <SFlex>
-          {/* <div>{userInfo.table}</div> */}
-          {/* <div>{userInfo.floor}</div> */}
+          <STableLayout>
+            {userInfo.table.length === 0 ? (
+              <SNoTable>{TABLE_INFO.NO_TABLE}</SNoTable>
+            ) : (
+              <>
+                {TABLE_INFO.RESERVED}
+                {renderTableData(userInfo.table)}
+              </>
+            )}
+          </STableLayout>
         </SFlex>
         <SFlex>
           <STextAlign>
@@ -59,7 +68,27 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete }) => {
     </>
   );
 };
-
+const SUserName = styled.p`
+  font-size: 18px;
+`;
+const SDateText = styled.p`
+  color: var(--gray-1000);
+`;
+const SGuestCount = styled.span`
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--gray-1000);
+`;
+const SNoTable = styled.div`
+  color: var(--gray-400);
+  font-style: italic;
+`;
+const STableLayout = styled.div`
+  display: flex;
+  gap: 5px;
+  color: var(--gray-800);
+  align-items: center;
+`;
 const SButtonGroup = styled.div`
   width: 100%;
 `;
@@ -72,8 +101,13 @@ const SPhoneLayout = styled(STextAlign)`
   background-color: var(--gray-200);
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
 
-  padding: 8px 10px;
+  font-size: 14px;
+  color: var(--gray-800);
+
+  padding: 6px 10px;
   border-radius: 20px;
+
+  margin-left: 5px;
 `;
 const SFlex = styled.div`
   display: flex;

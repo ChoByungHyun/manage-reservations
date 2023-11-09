@@ -4,11 +4,16 @@ export interface UserInfo {
   phone: string;
   date: ReservationDate;
   guest: number;
-  table: object;
+  table: TableInfo[];
   note: string;
 }
 
 export interface ReservationDate {
   time: string;
   date: string | null;
+}
+export interface TableInfo {
+  table: number;
+  floor: number;
+  reserved: boolean;
 }

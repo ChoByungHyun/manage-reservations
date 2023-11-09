@@ -1,41 +1,36 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ArrowIcon from "assets/arrow_drop_down.svg";
-import { FORM_PLACEHOLDER } from "constant/stringConstant";
+import { FORM_PLACEHOLDER, TABLE_INFO } from "constant/stringConstant";
 import TableTagButton from "./TableTagButton";
-
-type DropdownItem = {
-  name: string;
-  id: string;
-};
+import { TableInfo } from "types/userType";
+import { DOT } from "components/domain/form/table/renderTableData";
 
 type DropdownProps = {
-  items: DropdownItem[];
-  table: Record<string, string>;
-  onTableUpdate: (selectedItems: DropdownItem[]) => void;
+  items: TableInfo[];
+  table: TableInfo[];
+  onTableUpdate: (selectedItems: TableInfo[]) => void;
 };
 
 function DropDown({ items, onTableUpdate, table }: DropdownProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isInitial, setIsInitial] = useState<boolean>(true);
-  const [selectedItems, setSelectedItems] = useState<DropdownItem[]>([]);
+  const [selectedItems, setSelectedItems] = useState<TableInfo[]>([]);
 
   const dropdownRef = useRef<HTMLDivElement>(null); // dropdownRef 생성
+
   useEffect(() => {
-    // items와 table이 모두 도착했을 때만 초기 선택된 아이템을 설정합니다.
-    if (isInitial && items.length > 0 && Object.keys(table).length > 0) {
-      const initialSelectedItems = items.filter((item) => item.id in table);
+    if (isInitial && items.length > 0 && table.length > 0) {
+      const initialSelectedItems = items.filter((item) => table.includes(item));
       setSelectedItems(initialSelectedItems);
       setIsInitial(false);
     }
   }, [isInitial, items, table]);
 
   useEffect(() => {
-    // selectedItems가 변경될 때만 onTableUpdate 호출
-    const selectedItemsIds = selectedItems.map((item) => item.id);
-    const tableIds = Object.keys(table);
-
-    if (JSON.stringify(selectedItemsIds) !== JSON.stringify(tableIds)) {
+    const selectedItemsTables = selectedItems.map((item) => item.table);
+    const tableTables = Object.keys(table).map((key) => parseInt(key));
+    if (JSON.stringify(selectedItemsTables) !== JSON.stringify(tableTables)) {
       onTableUpdate(selectedItems);
     }
   }, [selectedItems, onTableUpdate, table]);
@@ -57,18 +52,19 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
     };
   }, []);
 
-  const handleItemClick = (item: DropdownItem) => {
+  const handleItemClick = (item: TableInfo) => {
     if (
       selectedItems.length < 3 &&
-      !selectedItems.some((selectedItem) => selectedItem.id === item.id)
+      !selectedItems.some((selectedItem) => selectedItem.table === item.table)
     ) {
       setSelectedItems([...selectedItems, item]);
     }
   };
-  const handleTagClick = (item: DropdownItem) => (event: React.MouseEvent) => {
+
+  const handleTagClick = (item: TableInfo) => (event: React.MouseEvent) => {
     event.stopPropagation();
     setSelectedItems(
-      selectedItems.filter((selectedItem) => selectedItem.id !== item.id)
+      selectedItems.filter((selectedItem) => selectedItem.table !== item.table)
     );
   };
 
@@ -87,10 +83,10 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
           {selectedItems.length > 0 ? (
             selectedItems.map((item) => (
               <TableTagButton
-                key={item.id}
-                text={item}
-                showCloseButton // SButton에 있는 태그에만 SCloseButton 보이도록
-                onClick={handleTagClick(item)} // SCloseButton 클릭 시 해당 태그 제거
+                key={item.table}
+                text={` ${TABLE_INFO.TABLE}${item.table} ${DOT} ${TABLE_INFO.FLOOR} ${item.floor} `}
+                showCloseButton
+                onClick={handleTagClick(item)}
               />
             ))
           ) : (
@@ -105,9 +101,9 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
       <SDropdownList $isOpen={isDropdownOpen}>
         {items.map((item) => (
           <TableTagButton
-            text={item}
+            text={` ${TABLE_INFO.TABLE} ${item.table} ${DOT} ${TABLE_INFO.FLOOR} ${item.floor} `}
             active={selectedItems.some(
-              (selectedItem) => selectedItem.id === item.id
+              (selectedItem) => selectedItem.table === item.table
             )}
             onClick={() => handleItemClick(item)}
           />

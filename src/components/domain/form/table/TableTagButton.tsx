@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import CloseIcon from "assets/close.svg";
-type DropdownItem = {
-  name: string;
-  id: string;
-};
+import { TableInfo } from "types/userType";
+
 type Props = {
-  text: DropdownItem;
+  text: string;
   active?: boolean;
   onClick?: (event: React.MouseEvent) => void;
   showCloseButton?: boolean;
@@ -23,7 +21,7 @@ const TableTagButton: React.FC<Props> = ({
       onClick={onClick}
       className={active ? "active" : ""}
     >
-      {text.name}
+      {text}
       {showCloseButton && (
         <SButtonLayout $active={showCloseButton}>
           <SCloseButton src={CloseIcon} alt="삭제아이콘" />
@@ -56,7 +54,7 @@ const STagButton = styled.div<TagProps>`
   border-radius: 44px;
   padding: 8px;
   font-size: 12px;
-  color: var(--black);
+  color: var(--gray-1000);
   white-space: nowrap;
   background-color: var(--gray-200);
 

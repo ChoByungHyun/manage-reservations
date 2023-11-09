@@ -23,3 +23,15 @@ export const BUTTON_TYPE = {
   SAVE_DELETE: "SaveAndDelete",
   SEATED: "Seated",
 };
+export const TABLE_INFO = {
+  TABLE: "Table",
+  FLOOR: "Floor",
+  NO_TABLE: "No Selected Table",
+  RESERVED: "Reserved",
+};
+export const TIME_CONFIG = {
+  HOUR_CONVERT: "12",
+  MINUTE_CONVERT: "00",
+  AM: "AM",
+  PM: "PM",
+};
