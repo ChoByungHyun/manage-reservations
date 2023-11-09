@@ -36,7 +36,7 @@ const SelectDateForm: React.FC<Props> = ({ onClose, onSave }) => {
 
   useEffect(() => {
     handleTimeChange();
-  }, [hour, minute, isPM]); // hour, minute, isPM 상태가 변경될 때마다 handleTimeChange 호출
+  }, [hour, minute, isPM]);
 
   // 시간 변경 후에 handleTimeChange 호출
   const changeHour = (change: number) => {
@@ -63,7 +63,7 @@ const SelectDateForm: React.FC<Props> = ({ onClose, onSave }) => {
 
   const handleTimeChange = () => {
     // 시간 변경 시에 호출되는 함수
-    const time = `${hour === 0 ? 12 : hour}:${minute === 0 ? "00" : minute}:${
+    const time = `${hour === 0 ? 12 : hour}:${minute === 0 ? "00" : minute} ${
       isPM ? "PM" : "AM"
     }`;
     setSelectedTime(time);

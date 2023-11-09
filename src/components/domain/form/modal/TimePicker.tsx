@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import UpArrow from "assets/chevron-up.svg";
 import DownArrow from "assets/chevron-down.svg";
+import { TIME_CONFIG } from "constant/stringConstant";
 type Props = {
   hour: number;
   minute: number;
@@ -25,7 +26,7 @@ const TimePicker: React.FC<Props> = ({
         <button onClick={() => changeHour(1)}>
           <img src={UpArrow} alt="" />
         </button>
-        {hour === 0 ? "12" : hour}
+        {hour === 0 ? TIME_CONFIG.HOUR_CONVERT : hour}
         <button onClick={() => changeHour(-1)}>
           <img src={DownArrow} alt="" />
         </button>
@@ -35,7 +36,7 @@ const TimePicker: React.FC<Props> = ({
         <button onClick={() => changeMinute(1)}>
           <img src={UpArrow} alt="" />
         </button>
-        {minute === 0 ? "00" : minute}
+        {minute === 0 ? TIME_CONFIG.MINUTE_CONVERT : minute}
         <button onClick={() => changeMinute(-1)}>
           <img src={DownArrow} alt="" />
         </button>
@@ -44,7 +45,7 @@ const TimePicker: React.FC<Props> = ({
         <button onClick={toggleAMPM}>
           <img src={UpArrow} alt="" />
         </button>
-        {isPM ? "PM" : "AM"}
+        {isPM ? TIME_CONFIG.PM : TIME_CONFIG.AM}
         <button onClick={toggleAMPM}>
           <img src={DownArrow} alt="" />
         </button>
