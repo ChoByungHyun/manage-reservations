@@ -12,6 +12,7 @@ type Props = {
   userId?: string;
   onSeated?: (id: string) => void;
   isEditMode?: boolean;
+  disabled?: boolean;
 };
 const ButtonGroup: React.FC<Props> = ({
   onClose,
@@ -21,6 +22,7 @@ const ButtonGroup: React.FC<Props> = ({
   userId,
   onSeated,
   isEditMode,
+  disabled,
 }) => {
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
     console.log("delete");
@@ -40,7 +42,7 @@ const ButtonGroup: React.FC<Props> = ({
   return (
     <SLayout>
       {buttonType === BUTTON_TYPE.ONLY_SAVE ? (
-        <SConfirmButton onClick={onSave}>
+        <SConfirmButton disabled={disabled} onClick={onSave}>
           {BUTTON_TYPE.ONLY_SAVE}
         </SConfirmButton>
       ) : buttonType === BUTTON_TYPE.SAVE_DELETE ? (
@@ -48,16 +50,19 @@ const ButtonGroup: React.FC<Props> = ({
           <SDeleteButton onClick={onClose}>
             <img src={DeleteIcon} alt="휴지통" />
           </SDeleteButton>
-          <SConfirmButton onClick={onSave}>
+          <SConfirmButton disabled={disabled} onClick={onSave}>
             {BUTTON_TYPE.ONLY_SAVE}
           </SConfirmButton>
         </>
       ) : (
         <>
-          <SDeleteButton onClick={isEditMode ? hadleEditDelete : handleDelete}>
+          <SDeleteButton onClick={handleDelete}>
             <img src={DeleteIcon} alt="휴지통" />
           </SDeleteButton>
-          <SConfirmButton onClick={isEditMode ? onSave : handleSeated}>
+          <SConfirmButton
+            disabled={disabled}
+            onClick={isEditMode ? onSave : handleSeated}
+          >
             {BUTTON_TYPE.SEATED}
           </SConfirmButton>
         </>
@@ -92,6 +97,13 @@ const SConfirmButton = styled.button`
   font-size: 16px;
   &:hover {
     scale: 1.01;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    &:hover {
+      scale: 1;
+    }
   }
 `;
 export default ButtonGroup;

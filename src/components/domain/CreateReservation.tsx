@@ -32,6 +32,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   const [note, setNote] = useState("");
   const [isSeat, setIsSeat] = useState(false);
   const [userInfoArray, setUserInfoArray] = useState<UserInfo[]>([]);
+  const [isInputValid, setIsInputValid] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -43,6 +44,14 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
       setUserInfoArray(parsedData);
     }
   }, []);
+
+  useEffect(() => {
+    if (name && phone && date.date && date.time) {
+      setIsInputValid(true);
+    } else {
+      setIsInputValid(false);
+    }
+  }, [name, phone, date]);
 
   useEffect(() => {
     if (userInfo) {
@@ -60,7 +69,11 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   }, [userInfo]);
 
   function closeModal() {
-    //모달 닫는 함수
+    setDate({
+      time: "",
+      date: null,
+    });
+
     setIsDateModal(false);
   }
 
@@ -76,7 +89,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
 
   function saveDate(date: ReservationDate) {
     setDate(date);
-    closeModal();
+    setIsDateModal(false);
   }
 
   function handleUpdateNote(event: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -201,6 +214,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
         userId={userInfo?.id}
         isEditMode={isEditMode}
         onDelete={handleDeleteReservation}
+        disabled={!isInputValid}
       />
     </SLayout>
   );
