@@ -8,42 +8,22 @@ import SLayout from "styles/SLayout";
 import { UserInfo } from "types/userType";
 import { sortReservationTime } from "util/sortReservationTime";
 const ReservationList = () => {
-  // const { userInfoArray, handleDeleteReservation, handleSetSeatTrue } =
-  //   useReservation();
-
-  const [userInfoArray, setUserInfoArray] = useState<UserInfo[]>([]);
-
-  useEffect(() => {
-    const storedData = localStorage.getItem("userInfo");
-
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      setUserInfoArray(parsedData);
-    }
-  }, []);
-
-  useEffect(() => {
-    //삭제 후 업데이트
-    localStorage.setItem("userInfo", JSON.stringify(userInfoArray));
-  }, [userInfoArray]);
-
-  function handleDeleteReservation(id: string) {
-    //예약카드 삭제하는 함수
-    setUserInfoArray((prev) => prev.filter((userInfo) => userInfo.id !== id));
-  }
-  function handleSetSeatTrue(id: string) {
-    setUserInfoArray((prev) =>
-      prev.map((userInfo) =>
-        userInfo.id === id ? { ...userInfo, isSeat: true } : userInfo
-      )
-    );
-  }
-
+  const { userInfoArray, handleDeleteReservation, handleSetSeatTrue } =
+    useReservation();
   const sortedReservationCard = sortReservationTime(userInfoArray);
+
+  const [validCardCount, setValidCardCount] = useState(0);
+  useEffect(() => {
+    const count = sortedReservationCard.filter((info) => !info.isSeat).length;
+    setValidCardCount(count);
+  }, [sortedReservationCard]);
 
   return (
     <SGrayLayout>
-      <Header pageType={HEADER_TYPE.LIST_PAGE} />
+      <Header
+        pageType={HEADER_TYPE.LIST_PAGE}
+        validCardCount={validCardCount}
+      />
       <SCardLayout>
         {sortedReservationCard.map((info) => {
           if (!info.isSeat) {

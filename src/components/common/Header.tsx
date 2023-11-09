@@ -8,8 +8,9 @@ import { HEADER_TITLE, HEADER_TYPE } from "constant/stringConstant";
 
 type Props = {
   pageType: string;
+  validCardCount: number;
 };
-const Header = ({ pageType }: Props) => {
+const Header = ({ pageType, validCardCount }: Props) => {
   const navigate = useNavigate();
   function navigateCreatePage() {
     navigate("/create");
@@ -25,7 +26,14 @@ const Header = ({ pageType }: Props) => {
             <SImgButton src={AddButtonIcon} aria-label="예약생성"></SImgButton>
             <SCreateButton>{HEADER_TITLE.CREATE_PAGE}</SCreateButton>
           </SBackButton>
-          <SListTitle aria-label="폼 제목">{HEADER_TITLE.LIST_PAGE}</SListTitle>
+          <SListTitle aria-label="폼 제목">
+            {HEADER_TITLE.LIST_PAGE}
+            {validCardCount > 0 && (
+              <SListCountLayout>
+                <SListCount>{validCardCount}</SListCount>
+              </SListCountLayout>
+            )}
+          </SListTitle>
         </>
       ) : pageType === HEADER_TYPE.CREATE_PAGE ? (
         <>
@@ -66,7 +74,30 @@ const STitle = styled.h1`
 `;
 
 const SListTitle = styled(STitle)`
+  position: relative;
   padding-right: 120px;
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  gap: 7px;
+`;
+const SListCountLayout = styled.div`
+  position: absolute;
+  left: 53%;
+  top: -1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  padding: 5px;
+  background-color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const SListCount = styled.p`
+  font-size: 13px;
+  color: var(--white);
+  margin: 0 auto;
 `;
 
 const SLayout = styled.div`
