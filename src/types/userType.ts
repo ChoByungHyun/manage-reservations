@@ -11,7 +11,7 @@ export interface UserInfo {
 
 export interface ReservationDate {
   time: string;
-  date: string | null;
+  date: Date;
 }
 export interface TableInfo {
   table: number;

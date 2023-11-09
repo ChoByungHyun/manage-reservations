@@ -7,8 +7,9 @@ import NoteIcon from "assets/edit.svg";
 import ButtonGroup from "./form/ButtonGroup";
 import { useNavigate } from "react-router-dom";
 import { UserInfo } from "types/userType";
-import renderTableData from "components/domain/form/table/renderTableData";
+import RenderTableData from "components/domain/form/table/RenderTableData";
 import { TABLE_INFO } from "constant/stringConstant";
+import { formatDate } from "util/formatDate";
 interface Props {
   userInfo: UserInfo;
   onDelete: (id: string) => void;
@@ -19,6 +20,9 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
   function handleGoEditPage(userInfo: UserInfo) {
     navigate("/edit", { state: userInfo });
   }
+
+  const userDate = formatDate(new Date(userInfo.date.date));
+
   return (
     <>
       <SLayout onClick={() => handleGoEditPage(userInfo)}>
@@ -34,7 +38,7 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
         <SFlex>
           <STextAlign>
             <img src={CalendarIcon} alt="" />
-            <SDateText>{userInfo.date.date}, </SDateText>
+            <SDateText>{userDate}, </SDateText>
             <SDateText>{userInfo.date.time}</SDateText>
           </STextAlign>
         </SFlex>
@@ -51,15 +55,21 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
             ) : (
               <>
                 {TABLE_INFO.RESERVED}
-                {renderTableData(userInfo.table)}
+                {RenderTableData(userInfo.table)}
               </>
             )}
           </STableLayout>
         </SFlex>
         <SFlex>
           <STextAlign>
-            <div>{userInfo.note}</div>
-            <img src={NoteIcon} alt="" />
+            {userInfo.note.length === 0 ? (
+              <></>
+            ) : (
+              <>
+                <div>{userInfo.note}</div>
+                <img src={NoteIcon} alt="" />
+              </>
+            )}
           </STextAlign>
         </SFlex>
         <SButtonGroup>

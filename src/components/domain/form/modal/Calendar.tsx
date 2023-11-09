@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // 스타일 시트를 임포트 합니다
 import styled from "styled-components";
+import { parseISO } from "date-fns";
+import "react-datepicker/dist/react-datepicker.css"; // 스타일 시트를 임포트 합니다
 type Props = {
   onSelectDate: (date: Date) => void;
   activeTab: string;
+  initialDate: Date;
 };
 
-const Calendar: React.FC<Props> = ({ onSelectDate, activeTab }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date()); // 현재 날짜로 초기화합니다
+const Calendar: React.FC<Props> = ({
+  onSelectDate,
+  activeTab,
+  initialDate,
+}) => {
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(initialDate) || new Date()
+  );
 
   const handleChange = (date: Date) => {
     setSelectedDate(date);
@@ -19,6 +27,7 @@ const Calendar: React.FC<Props> = ({ onSelectDate, activeTab }) => {
     <SCalendarLayout className={activeTab === "calendar" ? "active-tab" : ""}>
       <DatePicker
         className="datepicker"
+        startDate={initialDate}
         selected={selectedDate}
         onChange={handleChange}
         dateFormat="MMMM dd"

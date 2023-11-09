@@ -12,7 +12,7 @@ import CalendarIcon from "assets/event_available.svg";
 import { v4 as uuidv4 } from "uuid";
 import { ReservationDate, TableInfo, UserInfo } from "types/userType";
 import { useNavigate } from "react-router-dom";
-import { useReservation } from "hook/useReservation";
+import { formatDate } from "util/formatDate";
 interface Props {
   userInfo?: UserInfo;
 }
@@ -25,7 +25,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   const [phone, setPhone] = useState("");
   const [date, setDate] = useState<ReservationDate>({
     time: "",
-    date: null,
+    date: new Date(),
   });
   const [guest, setGuest] = useState(1);
   const [table, setTable] = useState<TableInfo[]>([]);
@@ -71,7 +71,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   function closeModal() {
     setDate({
       time: "",
-      date: null,
+      date: new Date(),
     });
 
     setIsDateModal(false);
@@ -88,6 +88,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   }
 
   function saveDate(date: ReservationDate) {
+    console.log("🚀 ~ file: CreateReservation.tsx:92 ~ saveDate ~ date:", date);
     setDate(date);
     setIsDateModal(false);
   }
@@ -161,7 +162,12 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   return (
     <SLayout>
       {isDateModal ? (
-        <SelectDateForm onClose={closeModal} onSave={saveDate} />
+        <SelectDateForm
+          initialDate={date.date}
+          initialTime={date.time}
+          onClose={closeModal}
+          onSave={saveDate}
+        />
       ) : (
         <></>
       )}
@@ -184,12 +190,11 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
           <SInput>
             <div>
               <img src={CalendarIcon} alt="달력 아이콘" />
-
               {date.date === null || date.time === "" ? (
                 FORM_PLACEHOLDER.DATE
               ) : (
                 <>
-                  {date.date}
+                  {formatDate(new Date(date.date))}
                   {", "}
                   {date.time}
                 </>

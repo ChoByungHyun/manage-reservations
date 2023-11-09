@@ -14,8 +14,15 @@ import { formatDate } from "util/formatDate";
 type Props = {
   onClose: () => void;
   onSave: (date: ReservationDate) => void;
+  initialTime?: string;
+  initialDate: Date;
 };
-const SelectDateForm: React.FC<Props> = ({ onClose, onSave }) => {
+const SelectDateForm: React.FC<Props> = ({
+  onClose,
+  onSave,
+  initialTime,
+  initialDate,
+}) => {
   let now = new Date(); // 현재 시간을 가져옴
   let currentHour = now.getHours();
   let currentMinute = now.getMinutes();
@@ -28,11 +35,25 @@ const SelectDateForm: React.FC<Props> = ({ onClose, onSave }) => {
   }
 
   const [activeTab, setActiveTab] = useState("time");
-  const [selectedDate, setSelectedDate] = useState<Date>(now); // 선택된 날짜를 관리하는 상태
+  // const [selectedDate, setSelectedDate] = useState<Date>(now); // 선택된 날짜를 관리하는 상태
   const [hour, setHour] = useState(currentHour % 12 || 12); // 시간 (0-11)
   const [minute, setMinute] = useState(Math.floor(currentMinute / 30) * 30); // 분 (0-30)
   const [isPM, setIsPM] = useState(currentHour >= 12); // AM 또는 PM
   const [selectedTime, setSelectedTime] = useState<string>(""); // 선택된 시간을 관리하는 상태
+  const [selectedDate, setSelectedDate] = useState<Date>(
+    initialDate ? new Date(initialDate) : new Date()
+  );
+
+  useEffect(() => {
+    if (initialTime) {
+      const [time, period] = initialTime.split(" ");
+      const [initialHour, initialMinute] = time.split(":").map(Number);
+
+      setHour(initialHour);
+      setMinute(initialMinute);
+      setIsPM(period === "PM");
+    }
+  }, []);
 
   useEffect(() => {
     handleTimeChange();
@@ -74,7 +95,7 @@ const SelectDateForm: React.FC<Props> = ({ onClose, onSave }) => {
   };
   const handleSave = () => {
     const date = {
-      date: formatDate(selectedDate),
+      date: selectedDate,
       time: selectedTime,
     };
     onSave(date);
@@ -91,7 +112,11 @@ const SelectDateForm: React.FC<Props> = ({ onClose, onSave }) => {
         </SInputForm>
         <SInputForm onClick={() => setActiveTab("calendar")}>
           <img src={CalendarIcon} alt="달력아이콘" />
-          <Calendar activeTab={activeTab} onSelectDate={handleChange} />
+          <Calendar
+            initialDate={initialDate}
+            activeTab={activeTab}
+            onSelectDate={handleChange}
+          />
         </SInputForm>
         <div>
           {activeTab === "time" && (
