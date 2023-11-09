@@ -161,7 +161,7 @@ const SButton = styled.button<DropdownListProps>`
   gap: 20px;
   padding: 16px;
   color: var(--gray-800);
-  ${(props) => props.$isOpen && `border : 1px solid var(--primary)`}
+  /* ${(props) => props.$isOpen && `border : 1px solid var(--primary)`} */
 `;
 
 const SArrowIconWrapper = styled.div<DropdownListProps>`

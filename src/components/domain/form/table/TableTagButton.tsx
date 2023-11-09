@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import CloseIcon from "assets/close.svg";
-import { TableInfo } from "types/userType";
+import CloseIcon from "assets/close-white.svg";
+import { DOT } from "./RenderTableData";
 
 type Props = {
   text: string;
@@ -15,13 +15,16 @@ const TableTagButton: React.FC<Props> = ({
   onClick,
   showCloseButton,
 }) => {
+  const textParts = text.split(DOT);
   return (
     <STagButton
       $active={active}
       onClick={onClick}
       className={active ? "active" : ""}
     >
-      {text}
+      <STableText>{textParts[0]}</STableText>
+      <SDot>{DOT}</SDot>
+      <STableText>{textParts[1]}</STableText>
       {showCloseButton && (
         <SButtonLayout $active={showCloseButton}>
           <SCloseButton src={CloseIcon} alt="삭제아이콘" />
@@ -34,16 +37,24 @@ const TableTagButton: React.FC<Props> = ({
 type TagProps = {
   $active: boolean | undefined;
 };
+const SDot = styled.p`
+  font-size: 9px;
+`;
+const STableText = styled.p`
+  font-size: 14px;
+`;
 const SButtonLayout = styled.div<TagProps>`
   display: flex;
   border-radius: 50%;
   background-color: var(--gray-400);
+  width: 12px;
+  height: 12px;
+  padding: 1px;
+
   &:hover {
   }
 `;
 const SCloseButton = styled.img`
-  width: 10px;
-  height: 10px;
   padding: 2px;
 `;
 const STagButton = styled.div<TagProps>`
