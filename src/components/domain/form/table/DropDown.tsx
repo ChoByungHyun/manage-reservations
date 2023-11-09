@@ -11,14 +11,34 @@ type DropdownItem = {
 
 type DropdownProps = {
   items: DropdownItem[];
+  table: Record<string, string>;
+  onTableUpdate: (selectedItems: DropdownItem[]) => void;
 };
 
-function DropDown({ items }: DropdownProps) {
+function DropDown({ items, onTableUpdate, table }: DropdownProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-
+  const [isInitial, setIsInitial] = useState<boolean>(true);
   const [selectedItems, setSelectedItems] = useState<DropdownItem[]>([]);
 
   const dropdownRef = useRef<HTMLDivElement>(null); // dropdownRef 생성
+  useEffect(() => {
+    // items와 table이 모두 도착했을 때만 초기 선택된 아이템을 설정합니다.
+    if (isInitial && items.length > 0 && Object.keys(table).length > 0) {
+      const initialSelectedItems = items.filter((item) => item.id in table);
+      setSelectedItems(initialSelectedItems);
+      setIsInitial(false);
+    }
+  }, [isInitial, items, table]);
+
+  useEffect(() => {
+    // selectedItems가 변경될 때만 onTableUpdate 호출
+    const selectedItemsIds = selectedItems.map((item) => item.id);
+    const tableIds = Object.keys(table);
+
+    if (JSON.stringify(selectedItemsIds) !== JSON.stringify(tableIds)) {
+      onTableUpdate(selectedItems);
+    }
+  }, [selectedItems, onTableUpdate, table]);
 
   // 외부 클릭 감지
   useEffect(() => {
@@ -66,7 +86,6 @@ function DropDown({ items }: DropdownProps) {
                 <TableTagButton
                   key={item.id}
                   text={item}
-                  active
                   showCloseButton // SButton에 있는 태그에만 SCloseButton 보이도록
                   onClick={handleTagClick(item)} // SCloseButton 클릭 시 해당 태그 제거
                 />
@@ -115,7 +134,7 @@ const SButton = styled.button<DropdownListProps>`
   gap: 20px;
   padding: 16px;
   color: var(--gray-800);
-  ${(props) => props.$isOpen && `border : 2px solid var(--primary)`}
+  ${(props) => props.$isOpen && `border : 1px solid var(--primary)`}
 `;
 
 const SArrowIconWrapper = styled.div<DropdownListProps>`

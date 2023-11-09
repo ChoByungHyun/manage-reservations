@@ -3,7 +3,7 @@ import { BUTTON_TYPE, FORM_PLACEHOLDER } from "constant/stringConstant";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GuestCounter from "./form/GuestCounter";
-import DropDown from "./form/DropDown";
+import DropDown from "./form/table/DropDown";
 import TextArea from "./form/TextArea";
 import ButtonGroup from "./form/ButtonGroup";
 import { MOCK_TABLE_DATA } from "constant/mockData";
@@ -16,6 +16,10 @@ import { useNavigate } from "react-router-dom";
 interface Props {
   userInfo?: UserInfo;
 }
+type DropdownItem = {
+  name: string;
+  id: string;
+};
 const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   const [isDateModal, setIsDateModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -132,6 +136,15 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     navigate("/");
   }
 
+  const handleTableUpdate = (selectedItems: DropdownItem[]) => {
+    const tableData = selectedItems.reduce((acc, item) => {
+      acc[item.id] = item.name;
+      return acc;
+    }, {} as Record<string, string>);
+
+    setTable(tableData);
+  };
+
   return (
     <SLayout>
       {isDateModal ? (
@@ -158,14 +171,27 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
           <SInput>
             <div>
               <img src={CalendarIcon} alt="달력 아이콘" />
-              {FORM_PLACEHOLDER.DATE}
+
+              {date.date === null || date.time === "" ? (
+                FORM_PLACEHOLDER.DATE
+              ) : (
+                <>
+                  {date.date}
+                  {", "}
+                  {date.time}
+                </>
+              )}
             </div>
           </SInput>
         </SInputLayout>
       </SUserInfo>
       <SReservation>
         <GuestCounter onCount={handleGuestCounter} guest={guest} />
-        <DropDown items={MOCK_TABLE_DATA} />
+        <DropDown
+          items={MOCK_TABLE_DATA}
+          table={table}
+          onTableUpdate={handleTableUpdate}
+        />
       </SReservation>
       <TextArea value={note} onChange={handleUpdateNote} />
       <ButtonGroup
@@ -181,12 +207,14 @@ const SInputLayout = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 40px;
-  border: 1px solid var(--gray-400);
+  /* height: 40px; */
+  /* border: 1px solid var(--gray-400); */
   border-radius: 5px;
-  align-self: center;
+  /* align-self: center; */
   flex: 1;
   cursor: pointer;
+  background-color: var(--gray-200);
+  box-shadow: var(--box-shadow);
 `;
 const SInput = styled.div`
   display: flex;
@@ -196,7 +224,7 @@ const SInput = styled.div`
     justify-content: center;
     gap: 5px;
     font-size: 14px;
-    color: var(--gray-600);
+    color: var(--black);
   }
 `;
 const SLayout = styled.div`

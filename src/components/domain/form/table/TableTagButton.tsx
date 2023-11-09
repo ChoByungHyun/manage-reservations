@@ -6,7 +6,7 @@ type DropdownItem = {
 };
 type Props = {
   text: DropdownItem;
-  active: boolean;
+  active?: boolean;
   onClick?: (event: React.MouseEvent) => void;
   showCloseButton?: boolean;
 };
@@ -34,14 +34,13 @@ const TableTagButton: React.FC<Props> = ({
 };
 
 type TagProps = {
-  $active: boolean;
+  $active: boolean | undefined;
 };
 const SButtonLayout = styled.div<TagProps>`
   display: flex;
   border-radius: 50%;
   background-color: var(--gray-400);
   &:hover {
-    scale: 1.03;
   }
 `;
 const SCloseButton = styled.img`
@@ -55,7 +54,7 @@ const STagButton = styled.div<TagProps>`
   align-items: center;
   gap: 5px;
   border-radius: 44px;
-  padding: 5px 8px;
+  padding: 8px;
   font-size: 12px;
   color: var(--black);
   white-space: nowrap;
@@ -63,12 +62,10 @@ const STagButton = styled.div<TagProps>`
 
   cursor: pointer;
   &.active {
-    /* color: var(--white); */
-    /* background-color: var(--point-color); */
     border: 1px solid var(--primary);
   }
   &:hover {
-    scale: ${(props) => (props.$active ? 1 : 1.03)};
+    scale: ${(props) => (props.$active ? 1 : 1.01)};
   }
 `;
 
