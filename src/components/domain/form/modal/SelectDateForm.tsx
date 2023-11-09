@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import TimerIcon from "assets/alarm_on.svg";
 import CalendarIcon from "assets/event_available.svg";
-import ButtonGroup from "../form/ButtonGroup";
+import ButtonGroup from "../ButtonGroup";
 import TimePicker from "./TimePicker";
 import { BUTTON_TYPE } from "constant/stringConstant";
-import Calendar from "../form/Calendar";
+import Calendar from "./Calendar";
 
 import "react-datepicker/dist/react-datepicker.css"; // 스타일 시트를 임포트 합니다
 import { ReservationDate } from "types/userType";

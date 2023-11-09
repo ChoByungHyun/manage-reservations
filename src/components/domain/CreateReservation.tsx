@@ -7,7 +7,7 @@ import DropDown from "./form/DropDown";
 import TextArea from "./form/TextArea";
 import ButtonGroup from "./form/ButtonGroup";
 import { MOCK_TABLE_DATA } from "constant/mockData";
-import SelectDateForm from "./modal/SelectDateForm";
+import SelectDateForm from "./form/modal/SelectDateForm";
 import CalendarIcon from "assets/event_available.svg";
 import { v4 as uuidv4 } from "uuid";
 import { ReservationDate, UserInfo } from "types/userType";

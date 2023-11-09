@@ -33,6 +33,8 @@ const GlobalStyle = createGlobalStyle`
     --gray-700: #8F8F8F;
     --gray-800: #787878;
     --primary:#ec551f;
+    --white: white;
+    --black: black;
   }
 
   /* tag reset */
