@@ -6,6 +6,7 @@ export interface UserInfo {
   guest: number;
   table: TableInfo[];
   note: string;
+  isSeat: boolean;
 }
 
 export interface ReservationDate {

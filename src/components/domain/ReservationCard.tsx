@@ -12,8 +12,9 @@ import { TABLE_INFO } from "constant/stringConstant";
 interface Props {
   userInfo: UserInfo;
   onDelete: (id: string) => void;
+  onSeated: (id: string) => void;
 }
-const ReservationCard: React.FC<Props> = ({ userInfo, onDelete }) => {
+const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
   const navigate = useNavigate();
   function handleGoEditPage(userInfo: UserInfo) {
     navigate("/edit", { state: userInfo });
@@ -62,7 +63,11 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete }) => {
           </STextAlign>
         </SFlex>
         <SButtonGroup>
-          <ButtonGroup onDelete={onDelete} userId={userInfo.id} />
+          <ButtonGroup
+            onSeated={onSeated}
+            onDelete={onDelete}
+            userId={userInfo.id}
+          />
         </SButtonGroup>
       </SLayout>
     </>

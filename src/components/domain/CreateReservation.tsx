@@ -12,6 +12,7 @@ import CalendarIcon from "assets/event_available.svg";
 import { v4 as uuidv4 } from "uuid";
 import { ReservationDate, TableInfo, UserInfo } from "types/userType";
 import { useNavigate } from "react-router-dom";
+import { useReservation } from "hook/useReservation";
 interface Props {
   userInfo?: UserInfo;
 }
@@ -29,10 +30,10 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   const [guest, setGuest] = useState(1);
   const [table, setTable] = useState<TableInfo[]>([]);
   const [note, setNote] = useState("");
+  const [isSeat, setIsSeat] = useState(false);
   const [userInfoArray, setUserInfoArray] = useState<UserInfo[]>([]);
 
   const navigate = useNavigate();
-
   useEffect(() => {
     // 로컬 스토리지에서 데이터 가져오기
     const storedData = localStorage.getItem("userInfo");
@@ -54,6 +55,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
       setGuest(userInfo.guest);
       setTable(userInfo.table);
       setNote(userInfo.note);
+      setIsSeat(userInfo.isSeat);
     }
   }, [userInfo]);
 
@@ -109,6 +111,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
       guest,
       table,
       note,
+      isSeat,
     };
     setUserInfoArray((prev) => {
       let updatedArray;
@@ -135,6 +138,12 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   const handleTableUpdate = (selectedItems: TableInfo[]) => {
     setTable(selectedItems);
   };
+
+  async function handleDeleteReservation(id: string) {
+    //예약카드 삭제하는 함수
+    setUserInfoArray((prev) => prev.filter((userInfo) => userInfo.id !== id));
+    await storageSaveUserInfo();
+  }
 
   return (
     <SLayout>
@@ -189,6 +198,9 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
         onClose={closeModal}
         buttonType={isEditMode ? BUTTON_TYPE.SEATED : BUTTON_TYPE.ONLY_SAVE}
         onSave={storageSaveUserInfo}
+        userId={userInfo?.id}
+        isEditMode={isEditMode}
+        onDelete={handleDeleteReservation}
       />
     </SLayout>
   );
