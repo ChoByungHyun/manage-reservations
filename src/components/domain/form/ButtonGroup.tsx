@@ -22,7 +22,6 @@ const ButtonGroup: React.FC<Props> = ({
   onSeated,
   isEditMode,
 }) => {
-  const navigate = useNavigate();
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
     console.log("delete");
     e.stopPropagation();
@@ -34,8 +33,6 @@ const ButtonGroup: React.FC<Props> = ({
     await new Promise((resolve) => setTimeout(resolve, 0));
   }
   function handleSeated(e: React.MouseEvent<HTMLButtonElement>) {
-    console.log("seated");
-
     e.stopPropagation();
     onSeated && userId && onSeated(userId);
   }
@@ -60,7 +57,7 @@ const ButtonGroup: React.FC<Props> = ({
           <SDeleteButton onClick={isEditMode ? hadleEditDelete : handleDelete}>
             <img src={DeleteIcon} alt="휴지통" />
           </SDeleteButton>
-          <SConfirmButton onClick={isEditMode ? onSave : onSave}>
+          <SConfirmButton onClick={isEditMode ? onSave : handleSeated}>
             {BUTTON_TYPE.SEATED}
           </SConfirmButton>
         </>
