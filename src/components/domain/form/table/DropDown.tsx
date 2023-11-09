@@ -80,17 +80,22 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
         }}
         $isOpen={isDropdownOpen}
       >
-        <STagButtonLayout>
-          {selectedItems.length > 0
-            ? selectedItems.map((item) => (
-                <TableTagButton
-                  key={item.id}
-                  text={item}
-                  showCloseButton // SButton에 있는 태그에만 SCloseButton 보이도록
-                  onClick={handleTagClick(item)} // SCloseButton 클릭 시 해당 태그 제거
-                />
-              ))
-            : FORM_PLACEHOLDER.TABLE}
+        <STagButtonLayout
+          className={selectedItems.length > 0 ? "has-items" : ""}
+        >
+          <div className="floating-label">{FORM_PLACEHOLDER.TABLE}</div>
+          {selectedItems.length > 0 ? (
+            selectedItems.map((item) => (
+              <TableTagButton
+                key={item.id}
+                text={item}
+                showCloseButton // SButton에 있는 태그에만 SCloseButton 보이도록
+                onClick={handleTagClick(item)} // SCloseButton 클릭 시 해당 태그 제거
+              />
+            ))
+          ) : (
+            <STablePlaceholder>{FORM_PLACEHOLDER.TABLE}</STablePlaceholder>
+          )}
         </STagButtonLayout>
         <SArrowIconWrapper $isOpen={isDropdownOpen}>
           <img src={ArrowIcon} alt="드롭다운" />
@@ -115,9 +120,34 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
 type DropdownListProps = {
   $isOpen: boolean;
 };
+const STablePlaceholder = styled.div`
+  padding-left: 6px;
+`;
 const STagButtonLayout = styled.div`
   display: flex;
   gap: 10px;
+  position: relative;
+  font-size: 12px;
+  color: var(--gray-600);
+
+  .floating-label {
+    position: absolute;
+
+    background-color: white;
+    padding: 0 5px;
+    transition: opacity 0.3s, top 0.3s;
+    opacity: 0;
+    white-space: nowrap;
+
+    transform: translateY(-50%);
+    font-size: 12px;
+  }
+
+  &.has-items .floating-label {
+    top: -10px;
+    left: -5px;
+    opacity: 1;
+  }
 `;
 const SDropdownContainer = styled.div`
   border-radius: 5px;

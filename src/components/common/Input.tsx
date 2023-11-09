@@ -26,10 +26,19 @@ const Input: React.FC<Props> = ({
         htmlFor={label}
       >
         {label}
+        {(label === "Name" || label === "Phone") && ( // 조건부 렌더링
+          <SLabelRequired>*</SLabelRequired> // 다른 스타일을 적용한 아스테리스크
+        )}
       </label>
+      <SPlaceholder $isFocused={isFocused || value !== ""}>
+        {placeholder}
+        {(label === "Name" || label === "Phone") && (
+          <SLabelRequired>*</SLabelRequired>
+        )}
+      </SPlaceholder>
       <SInput
         id={label}
-        placeholder={isFocused ? "" : placeholder}
+        // placeholder={isFocused ? "" : placeholder}
         type={type}
         value={value}
         onChange={onChange}
@@ -39,10 +48,28 @@ const Input: React.FC<Props> = ({
     </SInputForm>
   );
 };
+const SPlaceholder = styled.div<{ $isFocused: boolean }>`
+  position: absolute;
+  left: 15px;
+
+  font-size: 12px;
+  display: flex;
+  gap: 2px;
+  color: var(--gray-600);
+  top: ${({ $isFocused }) => ($isFocused ? "-50%" : "50%")};
+  transform: ${({ $isFocused }) =>
+    $isFocused ? "translate(0, -150%) scale(0.8)" : "translateY(-50%)"};
+  transition: all 0.2s;
+  opacity: ${({ $isFocused }) => ($isFocused ? "0" : "1")};
+`;
+
+const SLabelRequired = styled.span`
+  color: var(--primary);
+`;
 const SInputForm = styled.form`
   display: flex;
   flex-direction: column;
-  font-size: 16px;
+  font-size: 14px;
   position: relative;
 
   label.label-floating {
@@ -52,7 +79,7 @@ const SInputForm = styled.form`
     top: 30%;
     background: white;
     padding: 0 5px;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
     color: var(--gray-600);
     opacity: 0; // 처음에는 라벨이 안 보이게 설정
   }

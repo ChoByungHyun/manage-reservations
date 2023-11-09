@@ -35,6 +35,9 @@ const GlobalStyle = createGlobalStyle`
     --primary:#ec551f;
     --white: white;
     --black: black;
+
+    /* box-shadow */
+    --box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
   }
 
   /* tag reset */
