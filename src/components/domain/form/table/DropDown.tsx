@@ -20,8 +20,14 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null); // dropdownRef 생성
 
   useEffect(() => {
+    // 페이지에 처음 접근했을 때만 실행
     if (isInitial && items.length > 0 && table.length > 0) {
-      const initialSelectedItems = items.filter((item) => table.includes(item));
+      const initialSelectedItems = items.filter((item) =>
+        table.some(
+          (tableItem) =>
+            tableItem.table === item.table && tableItem.floor === item.floor
+        )
+      );
       setSelectedItems(initialSelectedItems);
       setIsInitial(false);
     }
@@ -68,6 +74,10 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
     );
   };
 
+  console.log(
+    "🚀 ~ file: DropDown.tsx:68 ~ handleTagClick ~ selectedItems:",
+    selectedItems
+  );
   return (
     <SDropdownContainer ref={dropdownRef}>
       <SButton
