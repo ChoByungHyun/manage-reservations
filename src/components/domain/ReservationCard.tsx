@@ -8,7 +8,7 @@ import ButtonGroup from "./form/ButtonGroup";
 import { useNavigate } from "react-router-dom";
 import { UserInfo } from "types/userType";
 import RenderTableData from "components/domain/form/table/RenderTableData";
-import { TABLE_INFO } from "constant/stringConstant";
+import { FORM_PLACEHOLDER, TABLE_INFO } from "constant/stringConstant";
 import { formatDate } from "util/formatDate";
 interface Props {
   userInfo: UserInfo;
@@ -63,7 +63,10 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
         <SFlex>
           <STextAlign>
             {userInfo.note.length === 0 ? (
-              <></>
+              <>
+                <div>{FORM_PLACEHOLDER.EMPTY_NOTE}</div>
+                <img src={NoteIcon} alt="" />
+              </>
             ) : (
               <>
                 <div>{userInfo.note}</div>
