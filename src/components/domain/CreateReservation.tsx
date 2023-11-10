@@ -33,7 +33,8 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   const [isSeat, setIsSeat] = useState(false);
   const [userInfoArray, setUserInfoArray] = useState<UserInfo[]>([]);
   const [isInputValid, setIsInputValid] = useState(false);
-
+  const [isModified, setIsModified] = useState(false);
+  const [isTableReset, setIsTableReset] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     // 로컬 스토리지에서 데이터 가져오기
@@ -68,6 +69,61 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     }
   }, [userInfo]);
 
+  useEffect(() => {
+    //편집페이지 수정여부 확인 훅
+    if (userInfo) {
+      const isNameModified = userInfo.name !== name;
+      const isPhoneModified = userInfo.phone !== phone;
+      const isDateModified =
+        new Date(userInfo.date.date).getTime() !==
+          new Date(date.date).getTime() || userInfo.date.time !== date.time;
+
+      const isGuestModified = userInfo.guest !== guest;
+      const isTableModified =
+        JSON.stringify(userInfo.table) !== JSON.stringify(table);
+      const isNoteModified = userInfo.note !== note;
+      const isSeatModified = userInfo.isSeat !== isSeat;
+
+      if (
+        isNameModified ||
+        isPhoneModified ||
+        isDateModified ||
+        isGuestModified ||
+        isTableModified ||
+        isNoteModified ||
+        isSeatModified
+      ) {
+        setIsModified(true);
+      } else {
+        setIsModified(false);
+      }
+    }
+  }, [name, phone, date, guest, table, note, isSeat, userInfo]);
+
+  // 중복 예약 확인 함수
+  function isDuplicateReservation(
+    table: TableInfo,
+    initialSelectedItems: TableInfo[]
+  ): boolean {
+    // 특정 테이블이 이미 선택된 테이블인 경우
+    if (initialSelectedItems.some((item) => item.table === table.table)) {
+      return false;
+    }
+    const duplicate = userInfoArray.some((userInfo: UserInfo) => {
+      const isSameDate =
+        formatDate(new Date(userInfo.date.date)) ===
+        formatDate(new Date(date.date));
+      const isSameTime = userInfo.date.time === date.time;
+      const isSameTable = userInfo.table.some(
+        (ut: TableInfo) => ut.table === table.table
+      );
+
+      return isSameDate && isSameTime && isSameTable;
+    });
+
+    return duplicate;
+  }
+
   function closeModal() {
     setDate({
       time: "",
@@ -88,9 +144,9 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   }
 
   function saveDate(date: ReservationDate) {
-    console.log("🚀 ~ file: CreateReservation.tsx:92 ~ saveDate ~ date:", date);
     setDate(date);
     setIsDateModal(false);
+    setIsTableReset(true);
   }
 
   function handleUpdateNote(event: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -141,22 +197,35 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
         updatedArray = [...prev, userInfoData];
       }
 
-      localStorage.setItem("userInfo", JSON.stringify(updatedArray));
+      updateLocalStorageAndNavigate(updatedArray);
       return updatedArray;
     });
-    // 상태 || 스토리지 업데이트 전 navigate 이슈로 추가
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    navigate("/");
   }
 
   const handleTableUpdate = (selectedItems: TableInfo[]) => {
     setTable(selectedItems);
   };
 
+  async function updateLocalStorageAndNavigate(updatedArray: UserInfo[]) {
+    // 스토리지 저장함수
+    localStorage.setItem("userInfo", JSON.stringify(updatedArray));
+    // 상태 || 스토리지 업데이트 전 navigate 이슈로 추가
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    navigate("/");
+  }
+
   async function handleDeleteReservation(id: string) {
-    //예약카드 삭제하는 함수
-    setUserInfoArray((prev) => prev.filter((userInfo) => userInfo.id !== id));
-    await storageSaveUserInfo();
+    //편집에서 예약카드 삭제하는 함수
+    const updatedArray = userInfoArray.filter((userInfo) => userInfo.id !== id);
+    updateLocalStorageAndNavigate(updatedArray);
+  }
+
+  async function handleSetSeatTrue(id: string) {
+    //편집에서 Seated 설정
+    const updatedArray = userInfoArray.map((userInfo) =>
+      userInfo.id === id ? { ...userInfo, isSeat: true } : userInfo
+    );
+    updateLocalStorageAndNavigate(updatedArray);
   }
 
   return (
@@ -209,6 +278,8 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
           items={MOCK_TABLE_DATA}
           table={table}
           onTableUpdate={handleTableUpdate}
+          isDisabled={isDuplicateReservation}
+          isTableReset={isTableReset}
         />
       </SReservation>
       <TextArea value={note} onChange={handleUpdateNote} />
@@ -220,6 +291,8 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
         isEditMode={isEditMode}
         onDelete={handleDeleteReservation}
         disabled={!isInputValid}
+        isModified={isModified}
+        onSeated={handleSetSeatTrue}
       />
     </SLayout>
   );

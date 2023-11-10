@@ -56,11 +56,12 @@ const SPlaceholder = styled.div<{ $isFocused: boolean }>`
   display: flex;
   gap: 2px;
   color: var(--gray-600);
-  top: ${({ $isFocused }) => ($isFocused ? "-50%" : "50%")};
+  top: ${({ $isFocused }) => ($isFocused ? "-10%" : "50%")};
   transform: ${({ $isFocused }) =>
     $isFocused ? "translate(0, -150%) scale(0.8)" : "translateY(-50%)"};
   transition: all 0.2s;
   opacity: ${({ $isFocused }) => ($isFocused ? "0" : "1")};
+  display: ${({ $isFocused }) => ($isFocused ? "none" : "flex")};
 `;
 
 const SLabelRequired = styled.span`
@@ -82,10 +83,13 @@ const SInputForm = styled.form`
     transition: all 0.3s ease;
     color: var(--gray-600);
     opacity: 0; // 처음에는 라벨이 안 보이게 설정
+    display: none;
   }
 
   label.label-floating.active {
     opacity: 1; // 인풋 필드가 활성화되면 라벨이 보이게 설정
+    display: block;
+
     transform: translate(0, -150%) scale(0.8);
   }
   input:focus {

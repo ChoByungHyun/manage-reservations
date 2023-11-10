@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import CloseIcon from "assets/close-white.svg";
 import { DOT } from "./RenderTableData";
+import { TableInfo } from "types/userType";
 
 type Props = {
   text: string;
   active?: boolean;
   onClick?: (event: React.MouseEvent) => void;
   showCloseButton?: boolean;
+  isDisabled?: () => boolean;
 };
 // 태그버튼 컴포넌트
 const TableTagButton: React.FC<Props> = ({
@@ -14,12 +16,15 @@ const TableTagButton: React.FC<Props> = ({
   active,
   onClick,
   showCloseButton,
+  isDisabled,
 }) => {
   const textParts = text.split(DOT);
+  const disabled = isDisabled ? isDisabled() : false;
   return (
     <STagButton
       $active={active}
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
+      $isDisabled={disabled}
       className={active ? "active" : ""}
     >
       <STableText>{textParts[0]}</STableText>
@@ -36,6 +41,10 @@ const TableTagButton: React.FC<Props> = ({
 
 type TagProps = {
   $active: boolean | undefined;
+};
+type ButtonTagProps = {
+  $active: boolean | undefined;
+  $isDisabled: boolean;
 };
 const SDot = styled.p`
   font-size: 9px;
@@ -57,7 +66,7 @@ const SButtonLayout = styled.div<TagProps>`
 const SCloseButton = styled.img`
   padding: 2px;
 `;
-const STagButton = styled.div<TagProps>`
+const STagButton = styled.div<ButtonTagProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,10 +77,24 @@ const STagButton = styled.div<TagProps>`
   color: var(--gray-1000);
   white-space: nowrap;
   background-color: var(--gray-200);
+  ${({ $isDisabled }) =>
+    $isDisabled &&
+    `
+    opacity: 0.5;
+    pointer-events: none;
+  `}
 
   cursor: pointer;
   &.active {
+    ${({ $isDisabled }) =>
+      $isDisabled
+        ? `
+    border: none;
+  `
+        : `
     border: 1px solid var(--primary);
+    
+  `}
   }
   &:hover {
     scale: ${(props) => (props.$active ? 1 : 1.01)};

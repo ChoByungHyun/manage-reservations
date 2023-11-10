@@ -3,20 +3,30 @@ import styled from "styled-components";
 import ArrowIcon from "assets/arrow_drop_down.svg";
 import { FORM_PLACEHOLDER, TABLE_INFO } from "constant/stringConstant";
 import TableTagButton from "./TableTagButton";
-import { TableInfo } from "types/userType";
+import { ReservationDate, TableInfo } from "types/userType";
 import { DOT } from "components/domain/form/table/RenderTableData";
 
 type DropdownProps = {
   items: TableInfo[];
   table: TableInfo[];
   onTableUpdate: (selectedItems: TableInfo[]) => void;
+  isDisabled: (table: TableInfo, selectedItems: TableInfo[]) => boolean;
+  isTableReset: boolean;
 };
 
-function DropDown({ items, onTableUpdate, table }: DropdownProps) {
+function DropDown({
+  items,
+  onTableUpdate,
+  table,
+  isDisabled,
+  isTableReset,
+}: DropdownProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isInitial, setIsInitial] = useState<boolean>(true);
   const [selectedItems, setSelectedItems] = useState<TableInfo[]>([]);
-
+  const [initialSelectedItems, setInitialSelectedItems] = useState<TableInfo[]>(
+    []
+  );
   const dropdownRef = useRef<HTMLDivElement>(null); // dropdownRef 생성
 
   useEffect(() => {
@@ -29,9 +39,14 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
         )
       );
       setSelectedItems(initialSelectedItems);
+      setInitialSelectedItems(initialSelectedItems); // 초기 선택된 테이블 정보를 저장
       setIsInitial(false);
     }
   }, [isInitial, items, table]);
+
+  useEffect(() => {
+    if (isTableReset) setSelectedItems([]);
+  }, [isTableReset]);
 
   useEffect(() => {
     const selectedItemsTables = selectedItems.map((item) => item.table);
@@ -74,10 +89,6 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
     );
   };
 
-  console.log(
-    "🚀 ~ file: DropDown.tsx:68 ~ handleTagClick ~ selectedItems:",
-    selectedItems
-  );
   return (
     <SDropdownContainer ref={dropdownRef}>
       <SButton
@@ -97,6 +108,7 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
                 text={` ${TABLE_INFO.TABLE}${item.table} ${DOT} ${TABLE_INFO.FLOOR} ${item.floor} `}
                 showCloseButton
                 onClick={handleTagClick(item)}
+                isDisabled={() => isDisabled(item, selectedItems)}
               />
             ))
           ) : (
@@ -117,6 +129,7 @@ function DropDown({ items, onTableUpdate, table }: DropdownProps) {
               (selectedItem) => selectedItem.table === item.table
             )}
             onClick={() => handleItemClick(item)}
+            isDisabled={() => isDisabled(item, initialSelectedItems)}
           />
         ))}
       </SDropdownList>
@@ -142,8 +155,10 @@ const STagButtonLayout = styled.div`
 
     background-color: white;
     padding: 0 5px;
+    display: none;
     transition: opacity 0.3s, top 0.3s;
     opacity: 0;
+
     white-space: nowrap;
 
     transform: translateY(-50%);
@@ -153,6 +168,7 @@ const STagButtonLayout = styled.div`
   &.has-items .floating-label {
     top: -10px;
     left: -5px;
+    display: flex;
     opacity: 1;
   }
 `;

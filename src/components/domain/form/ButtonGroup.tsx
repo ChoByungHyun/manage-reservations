@@ -11,6 +11,7 @@ type Props = {
   onSeated?: (id: string) => void;
   isEditMode?: boolean;
   disabled?: boolean;
+  isModified?: boolean;
 };
 const ButtonGroup: React.FC<Props> = ({
   onClose,
@@ -21,6 +22,7 @@ const ButtonGroup: React.FC<Props> = ({
   onSeated,
   isEditMode,
   disabled,
+  isModified,
 }) => {
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
     console.log("delete");
@@ -59,9 +61,9 @@ const ButtonGroup: React.FC<Props> = ({
           </SDeleteButton>
           <SConfirmButton
             disabled={disabled}
-            onClick={isEditMode ? onSave : handleSeated}
+            onClick={isModified ? onSave : handleSeated}
           >
-            {BUTTON_TYPE.SEATED}
+            {isModified ? BUTTON_TYPE.ONLY_SAVE : BUTTON_TYPE.SEATED}
           </SConfirmButton>
         </>
       )}
