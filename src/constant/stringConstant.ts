@@ -12,6 +12,7 @@ export const FORM_PLACEHOLDER = {
   NOTE: "Add Note...",
   SAVE: "Save",
   SEATED: "Seated",
+  EMPTY_NOTE: "Note",
 };
 export const HEADER_TYPE = {
   LIST_PAGE: "list",
