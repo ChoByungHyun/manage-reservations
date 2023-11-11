@@ -17,8 +17,11 @@ const Input: React.FC<Props> = ({
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(value !== "");
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+  }
   return (
-    <SInputForm>
+    <SInputForm onSubmit={handleSubmit}>
       <label
         className={`label-floating ${
           isFocused || value !== "" ? "active" : ""

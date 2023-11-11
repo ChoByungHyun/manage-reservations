@@ -160,8 +160,8 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     setIsTableReset(true);
   }
 
-  function handleUpdateNote(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setNote(event.target.value);
+  function handleUpdateNote(value: string) {
+    setNote(value);
   }
 
   const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
