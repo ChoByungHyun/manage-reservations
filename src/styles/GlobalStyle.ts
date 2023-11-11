@@ -34,6 +34,9 @@ const GlobalStyle = createGlobalStyle`
     --gray-800: #787878;
     --gray-1000:#4f4f4f;
     --primary:#ec551f;
+    --primary-linear-dark:#d95221;
+    --primary-linear-light:#e99070;
+
     --white: white;
     --black: black;
 

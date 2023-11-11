@@ -82,7 +82,8 @@ const SDeleteButton = styled.button`
   padding: 10px 20px;
 
   background-color: var(--gray-200);
-  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+
+  box-shadow: var(--box-shadow);
   &:hover {
     scale: 1.02;
   }
@@ -91,7 +92,13 @@ const SConfirmButton = styled.button`
   flex: 1;
   padding: 20px 30px;
   background-color: var(--primary);
-
+  background-image: linear-gradient(
+    to bottom,
+    var(--primary-linear-light),
+    var(--primary-linear-dark),
+    var(--primary)
+  );
+  box-shadow: var(--box-shadow);
   border-radius: 8px;
   color: white;
   font-size: 16px;
