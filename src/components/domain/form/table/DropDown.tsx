@@ -44,6 +44,7 @@ function DropDown({
 
   useEffect(() => {
     if (isTableReset) setSelectedItems([]);
+    setInitialSelectedItems([]);
   }, [isTableReset]);
 
   useEffect(() => {
@@ -86,7 +87,10 @@ function DropDown({
   const handleTagClick = (item: TableInfo) => (event: React.MouseEvent) => {
     event.stopPropagation();
     setSelectedItems(
-      selectedItems.filter((selectedItem) => selectedItem.table !== item.table)
+      selectedItems.filter(
+        (selectedItem) =>
+          selectedItem.table !== item.table || selectedItem.floor !== item.floor
+      )
     );
   };
 

@@ -116,7 +116,11 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     initialSelectedItems: TableInfo[]
   ): boolean {
     // 특정 테이블이 이미 선택된 테이블인 경우
-    if (initialSelectedItems.some((item) => item === table)) {
+    if (
+      initialSelectedItems.some(
+        (item) => item.table === table.table && item.floor === table.floor
+      )
+    ) {
       return false;
     }
     const duplicate = userInfoArray.some((userInfo: UserInfo) => {
@@ -124,7 +128,9 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
         formatDate(new Date(userInfo.date.date)) ===
         formatDate(new Date(date.date));
       const isSameTime = userInfo.date.time === date.time;
-      const isSameTable = userInfo.table.some((ut: TableInfo) => ut === table);
+      const isSameTable = userInfo.table.some(
+        (ut: TableInfo) => ut.table === table.table && ut.floor === table.floor
+      );
 
       return isSameDate && isSameTime && isSameTable;
     });
