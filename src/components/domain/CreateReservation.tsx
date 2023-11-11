@@ -47,12 +47,22 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   }, []);
 
   useEffect(() => {
+    // 필수 입력 항목 validate
     if (name && phone && date.date && date.time) {
       setIsInputValid(true);
     } else {
       setIsInputValid(false);
     }
+    if (name.length >= 15) {
+      alert("이름은 15글자 이하여야합니다!");
+      setIsInputValid(false);
+    }
   }, [name, phone, date]);
+
+  useEffect(() => {
+    //테이블 리셋 후 리셋 트리거 초기화
+    setIsTableReset(false);
+  }, [isTableReset]);
 
   useEffect(() => {
     if (userInfo) {
@@ -131,6 +141,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     });
 
     setIsDateModal(false);
+    setIsTableReset(true);
   }
 
   function handleGuestCounter(value: number) {
