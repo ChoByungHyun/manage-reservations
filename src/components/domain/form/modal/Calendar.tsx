@@ -20,7 +20,7 @@ const Calendar: React.FC<Props> = ({
 
   const handleChange = (date: Date) => {
     setSelectedDate(date);
-    onSelectDate(date); // 선택된 날짜를 상위 컴포넌트에 전달합니다
+    onSelectDate(date);
   };
 
   return (
@@ -28,6 +28,7 @@ const Calendar: React.FC<Props> = ({
       <DatePicker
         className="datepicker"
         startDate={initialDate}
+        minDate={new Date()}
         selected={selectedDate}
         onChange={handleChange}
         dateFormat="MMMM dd"
