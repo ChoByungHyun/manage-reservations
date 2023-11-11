@@ -30,7 +30,6 @@ function DropDown({
   const dropdownRef = useRef<HTMLDivElement>(null); // dropdownRef 생성
 
   useEffect(() => {
-    // 페이지에 처음 접근했을 때만 실행
     if (isInitial && items.length > 0 && table.length > 0) {
       const initialSelectedItems = items.filter((item) =>
         table.some(
@@ -203,6 +202,7 @@ const SDropdownList = styled.div<DropdownListProps>`
   background-color: var(--white);
   padding: 10px 30px;
   box-sizing: border-box;
+  z-index: 20;
   ${(props) =>
     props.$isOpen
       ? `
