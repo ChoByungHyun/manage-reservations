@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CloseIcon from "assets/close-white.svg";
-import { DOT } from "./RenderTableData";
 import { TableInfo } from "types/userType";
+import { DOT } from "constant/stringConstant";
 
 type Props = {
   text: string;

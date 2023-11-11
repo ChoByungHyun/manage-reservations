@@ -1,9 +1,8 @@
 import { TableInfo } from "types/userType";
 import styled from "styled-components";
+import { DOT } from "constant/stringConstant";
 
-export const DOT = "•";
-
-const RenderTableData = (tableInfo: TableInfo[]) => {
+const TableDataRender = (tableInfo: TableInfo[]) => {
   const floorTableMap = tableInfo.reduce((acc, curr) => {
     if (!acc[curr.floor]) {
       acc[curr.floor] = [];
@@ -38,4 +37,4 @@ const SFloorNumber = styled.span`
   /* font-weight: bold; */
 `;
 
-export default RenderTableData;
+export default TableDataRender;

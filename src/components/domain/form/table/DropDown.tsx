@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ArrowIcon from "assets/arrow_drop_down.svg";
-import { FORM_PLACEHOLDER, TABLE_INFO } from "constant/stringConstant";
+import { DOT, FORM_PLACEHOLDER, TABLE_INFO } from "constant/stringConstant";
 import TableTagButton from "./TableTagButton";
-import { ReservationDate, TableInfo } from "types/userType";
-import { DOT } from "components/domain/form/table/RenderTableData";
+import { TableInfo } from "types/userType";
 
 type DropdownProps = {
   items: TableInfo[];

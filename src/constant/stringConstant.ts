@@ -36,3 +36,4 @@ export const TIME_CONFIG = {
   AM: "AM",
   PM: "PM",
 };
+export const DOT = "•";

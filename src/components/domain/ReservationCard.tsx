@@ -7,7 +7,7 @@ import NoteIcon from "assets/edit.svg";
 import ButtonGroup from "./form/ButtonGroup";
 import { useNavigate } from "react-router-dom";
 import { UserInfo } from "types/userType";
-import RenderTableData from "components/domain/form/table/RenderTableData";
+import TableDataRender from "components/domain/form/table/TableDataRender";
 import { FORM_PLACEHOLDER, TABLE_INFO } from "constant/stringConstant";
 import { formatDate } from "util/formatDate";
 interface Props {
@@ -55,7 +55,7 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
             ) : (
               <>
                 {TABLE_INFO.RESERVED}
-                {RenderTableData(userInfo.table)}
+                {TableDataRender(userInfo.table)}
               </>
             )}
           </STableLayout>
