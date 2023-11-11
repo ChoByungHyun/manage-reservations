@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ReservationDate, TableInfo, UserInfo } from "types/userType";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "util/formatDate";
+import { userPhoneValidate } from "util/userPhoneValidate";
 interface Props {
   userInfo?: UserInfo;
 }
@@ -167,20 +168,8 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   function handleUpdateNote(value: string) {
     setNote(value);
   }
-
   const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    let value = e.target.value.replace(/\D/g, ""); // 숫자가 아닌 것들을 제거
-    if (value.length > 11) {
-      value = value.slice(0, 11); // 입력값을 11자리로 제한
-    }
-
-    // 숫자를 그룹으로 나누어 각 그룹 사이에 하이픈을 추가
-    if (value.length > 8) {
-      value = value.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3");
-    } else if (value.length > 4) {
-      value = value.replace(/(\d{3})(\d+)/, "$1-$2");
-    }
-
+    const value = userPhoneValidate(e.target.value);
     setPhone(value);
   };
 
