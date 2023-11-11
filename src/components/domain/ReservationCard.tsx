@@ -53,10 +53,12 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
             {userInfo.table.length === 0 ? (
               <SNoTable>{TABLE_INFO.NO_TABLE}</SNoTable>
             ) : (
-              <>
+              <STableInfoLayout>
                 {TABLE_INFO.RESERVED}
-                {TableDataRender(userInfo.table)}
-              </>
+                <STableDataInfo>
+                  {TableDataRender(userInfo.table)}
+                </STableDataInfo>
+              </STableInfoLayout>
             )}
           </STableLayout>
         </SFlex>
@@ -86,6 +88,17 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
     </>
   );
 };
+const STableInfoLayout = styled.div`
+  display: flex;
+  gap: 5px;
+`;
+const STableDataInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
 const SUserName = styled.p`
   font-size: 18px;
 `;

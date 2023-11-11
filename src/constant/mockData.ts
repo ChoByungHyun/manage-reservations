@@ -39,4 +39,54 @@ export const MOCK_TABLE_DATA = [
     floor: 1,
     reserved: false,
   },
+  {
+    table: 1,
+    floor: 2,
+    reserved: false,
+  },
+  {
+    table: 2,
+    reserved: false,
+    floor: 2,
+  },
+  {
+    table: 3,
+    reserved: false,
+    floor: 2,
+  },
+  {
+    table: 4,
+    reserved: false,
+    floor: 2,
+  },
+  {
+    table: 5,
+    reserved: false,
+    floor: 2,
+  },
+  {
+    table: 1,
+    floor: 3,
+    reserved: false,
+  },
+  {
+    table: 2,
+    reserved: false,
+    floor: 3,
+  },
+  {
+    table: 3,
+    reserved: false,
+    floor: 3,
+  },
+  {
+    table: 4,
+    reserved: false,
+    floor: 3,
+  },
+  {
+    table: 5,
+    reserved: false,
+    floor: 3,
+  },
 ];

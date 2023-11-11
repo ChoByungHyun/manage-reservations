@@ -9,6 +9,7 @@ type Props = {
   onClick?: (event: React.MouseEvent) => void;
   showCloseButton?: boolean;
   isDisabled?: () => boolean;
+  showDot: boolean;
 };
 // 태그버튼 컴포넌트
 const TableTagButton: React.FC<Props> = ({
@@ -17,6 +18,7 @@ const TableTagButton: React.FC<Props> = ({
   onClick,
   showCloseButton,
   isDisabled,
+  showDot,
 }) => {
   const textParts = text.split(DOT);
   const disabled = isDisabled ? isDisabled() : false;
@@ -28,7 +30,7 @@ const TableTagButton: React.FC<Props> = ({
       className={active ? "active" : ""}
     >
       <STableText>{textParts[0]}</STableText>
-      <SDot>{DOT}</SDot>
+      {showDot && <SDot>{DOT}</SDot>}
       <STableText>{textParts[1]}</STableText>
       {showCloseButton && (
         <SButtonLayout $active={showCloseButton}>

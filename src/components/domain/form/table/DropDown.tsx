@@ -74,7 +74,10 @@ function DropDown({
   const handleItemClick = (item: TableInfo) => {
     if (
       selectedItems.length < 3 &&
-      !selectedItems.some((selectedItem) => selectedItem.table === item.table)
+      !selectedItems.some(
+        (selectedItem) =>
+          selectedItem.table === item.table && selectedItem.floor === item.floor
+      )
     ) {
       setSelectedItems([...selectedItems, item]);
     }
@@ -86,6 +89,19 @@ function DropDown({
       selectedItems.filter((selectedItem) => selectedItem.table !== item.table)
     );
   };
+
+  // items를 floor로 그룹화.
+  const itemsByFloor = items.reduce<{ [floor: number]: TableInfo[] }>(
+    (groups, item) => {
+      const floor = item.floor;
+      if (!groups[floor]) {
+        groups[floor] = [];
+      }
+      groups[floor].push(item);
+      return groups;
+    },
+    {}
+  );
 
   return (
     <SDropdownContainer ref={dropdownRef}>
@@ -106,6 +122,7 @@ function DropDown({
                 text={` ${TABLE_INFO.TABLE}${item.table} ${DOT} ${TABLE_INFO.FLOOR} ${item.floor} `}
                 showCloseButton
                 onClick={handleTagClick(item)}
+                showDot={true}
                 isDisabled={() => isDisabled(item, selectedItems)}
               />
             ))
@@ -119,16 +136,26 @@ function DropDown({
       </SButton>
 
       <SDropdownList $isOpen={isDropdownOpen}>
-        {items.map((item, index) => (
-          <TableTagButton
-            key={index}
-            text={` ${TABLE_INFO.TABLE} ${item.table} ${DOT} ${TABLE_INFO.FLOOR} ${item.floor} `}
-            active={selectedItems.some(
-              (selectedItem) => selectedItem.table === item.table
-            )}
-            onClick={() => handleItemClick(item)}
-            isDisabled={() => isDisabled(item, initialSelectedItems)}
-          />
+        {Object.values(itemsByFloor).map((itemsInFloor, index) => (
+          <SFloorContainer key={index}>
+            <SFloorTitle>{`Floor ${itemsInFloor[0].floor}`}</SFloorTitle>
+            <STableButtonsContainer>
+              {itemsInFloor.map((item, index) => (
+                <TableTagButton
+                  key={index}
+                  text={`Table ${item.table}`}
+                  showDot={false}
+                  active={selectedItems.some(
+                    (selectedItem) =>
+                      selectedItem.table === item.table &&
+                      selectedItem.floor === item.floor
+                  )}
+                  onClick={() => handleItemClick(item)}
+                  isDisabled={() => isDisabled(item, initialSelectedItems)}
+                />
+              ))}
+            </STableButtonsContainer>
+          </SFloorContainer>
         ))}
       </SDropdownList>
     </SDropdownContainer>
@@ -197,11 +224,14 @@ const SDropdownList = styled.div<DropdownListProps>`
   position: absolute;
   border: 1px solid var(--gray-400);
   width: 540px;
+  height: 150px;
+  overflow-y: scroll;
   border-radius: 5px;
   background-color: var(--white);
   padding: 10px 30px;
   box-sizing: border-box;
   z-index: 20;
+
   ${(props) =>
     props.$isOpen
       ? `
@@ -211,16 +241,21 @@ const SDropdownList = styled.div<DropdownListProps>`
   `
       : `display:none;`}
 `;
-
-const SDropdownItemWrapper = styled.div<DropdownListProps>`
+// 스타일 컴포넌트
+const SFloorContainer = styled.div`
   display: flex;
-  align-items: center;
-  position: relative;
-  height: 20px;
-  text-align: left;
-  padding: 12px;
-  border-bottom: 1px solid var(--gray-400);
-  cursor: pointer;
+  flex-direction: column;
+  width: 100%;
 `;
 
+const SFloorTitle = styled.div`
+  font-size: 15px;
+  margin-bottom: 10px;
+`;
+
+const STableButtonsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+`;
 export default DropDown;
