@@ -72,7 +72,7 @@ const SelectDateForm: React.FC<Props> = ({
     if (newMinute < 0) {
       setMinute(TIME_CONFIG.STANDARD_MINUTE);
       changeHour(TIME_CONFIG.MINUS_TIME);
-    } else if (newMinute >= TIME_CONFIG.STANDARD_HOUR) {
+    } else if (newMinute >= TIME_CONFIG.ONE_HOUR) {
       setMinute(0);
       changeHour(TIME_CONFIG.PLUS_TIME);
     } else {
@@ -109,7 +109,7 @@ const SelectDateForm: React.FC<Props> = ({
         <SInputForm onClick={() => setActiveTab("time")}>
           <img src={TimerIcon} alt="시계아이콘" />
           <SInput className={activeTab === "time" ? "active-tab" : ""}>{`${
-            hour === 0 ? TIME_CONFIG.STANDARD_HOUR : hour
+            hour === 0 ? TIME_CONFIG.HOUR_CONVERT : hour
           }:${minute === 0 ? TIME_CONFIG.MINUTE_CONVERT : minute}:${
             isPM ? TIME_CONFIG.PM : TIME_CONFIG.AM
           }`}</SInput>

@@ -13,6 +13,7 @@ export const TIME_CONFIG = {
   MINUS_TIME: -1,
   STANDARD_HOUR: 12,
   STANDARD_MINUTE: 30,
+  ONE_HOUR: 60,
 };
 export const NAME_CONFIG = {
   MAX_LENGTH: 15,
