@@ -71,6 +71,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     }
     if (name.length >= NAME_CONFIG.MAX_LENGTH) {
       alert(ALERT_MESSAGE.NAME_LENGTH);
+      setName("");
       setIsInputValid(false);
     }
   }, [name, phone, date]);
