@@ -5,18 +5,19 @@ import { useNavigate } from "react-router-dom";
 import AddButtonIcon from "assets/add.svg";
 import CloseButtonIcon from "assets/close.svg";
 import { HEADER_TITLE, HEADER_TYPE } from "constant/stringConstant";
+import { PATH } from "constant/navigateConstant";
 
 type Props = {
   pageType: string;
-  validCardCount: number;
+  validCardCount?: number;
 };
 const Header = ({ pageType, validCardCount }: Props) => {
   const navigate = useNavigate();
   function navigateCreatePage() {
-    navigate("/create");
+    navigate(PATH.CREATE);
   }
   function navigateBack() {
-    navigate(-1);
+    navigate(PATH.BACK);
   }
   return (
     <SLayout>
@@ -28,7 +29,7 @@ const Header = ({ pageType, validCardCount }: Props) => {
           </SBackButton>
           <SListTitle aria-label="폼 제목">
             {HEADER_TITLE.LIST_PAGE}
-            {validCardCount > 0 && (
+            {validCardCount !== undefined && validCardCount > 0 && (
               <SListCountLayout>
                 <SListCount>{validCardCount}</SListCount>
               </SListCountLayout>
@@ -77,8 +78,6 @@ const SListTitle = styled(STitle)`
   position: relative;
   padding-right: 120px;
   display: flex;
-  /* justify-content: center;
-  align-items: center; */
   gap: 7px;
 `;
 const SListCountLayout = styled.div`
