@@ -179,9 +179,12 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   }
 
   function saveDate(date: ReservationDate) {
-    setDate(date);
-    setIsDateModal(false);
-    setIsTableReset(true);
+    const isValid = pastDateValidate(date.date, date.time);
+    if (isValid) {
+      setDate(date);
+      setIsDateModal(false);
+      setIsTableReset(true);
+    }
   }
 
   function handleUpdateNote(value: string) {
@@ -192,19 +195,18 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     setPhone(value);
   };
 
-  function pastDateValidate() {
-    const selectedDateTime = new Date(date.date);
-    const [selectedHour, selectedMinute] = convertTimeToHourAndMinute(
-      date.time
-    );
-    selectedDateTime.setHours(selectedHour, selectedMinute);
+  function pastDateValidate(selectedDate: Date, selectedTime: string) {
+    const [selectedHour, selectedMinute] =
+      convertTimeToHourAndMinute(selectedTime);
+    selectedDate.setHours(selectedHour, selectedMinute);
+
     const currentDateTime = new Date();
 
-    if (selectedDateTime < currentDateTime) {
+    if (selectedDate.getTime() < currentDateTime.getTime()) {
       alert(ALERT_MESSAGE.PAST_DATE);
-      closeModal();
       return false;
     }
+
     return true;
   }
 
@@ -212,8 +214,8 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     //Save Button 눌렀을 때 객체형태로 Array저장하는 함수
     const uniqueID = uuidv4();
 
-    const dateValidate = pastDateValidate();
-    if (!dateValidate) return;
+    // const dateValidate = pastDateValidate();
+    // if (!dateValidate) return;
 
     const userInfoData: UserInfo = {
       id: uniqueID,
