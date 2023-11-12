@@ -1,5 +1,7 @@
+import { ALERT_MESSAGE } from "constant/messageConstant";
+import { NOTE_CONFIG } from "constant/numberConstant";
 import { FORM_PLACEHOLDER } from "constant/stringConstant";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 type Props = {
   value: string;
@@ -7,10 +9,19 @@ type Props = {
 };
 const TextArea: React.FC<Props> = ({ value, onChange }) => {
   const divRef = useRef<HTMLDivElement>(null);
+  const [prevText, setPrevText] = useState<string>("");
 
   const handleInput = () => {
-    const newText = divRef.current?.innerText || "";
-    onChange(newText);
+    if (divRef.current) {
+      const newText = divRef.current.innerText;
+      if (newText.length >= NOTE_CONFIG.MAX_LENGTH) {
+        divRef.current.innerText = prevText;
+        alert(ALERT_MESSAGE.NOTE_LENGTH);
+      } else {
+        setPrevText(newText);
+        onChange(newText);
+      }
+    }
   };
 
   useEffect(() => {

@@ -158,9 +158,9 @@ const SLayout = styled(SFlex)`
 `;
 const SNote = styled.div`
   max-width: 150px;
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  text-overflow: ellipsis; /* 말줄임 적용 */
 `;
 const SNoteLayout = styled(STextAlign)`
   height: 15px;
