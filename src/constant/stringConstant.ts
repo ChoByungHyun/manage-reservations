@@ -30,10 +30,10 @@ export const TABLE_INFO = {
   NO_TABLE: "No Selected Table",
   RESERVED: "Reserved",
 };
-export const TIME_CONFIG = {
-  HOUR_CONVERT: "12",
-  MINUTE_CONVERT: "00",
-  AM: "AM",
-  PM: "PM",
+
+export const DATE_FORMAT = {
+  TODAY: "Today",
+  CALENDAR_FORMAT: "MMMM dd",
 };
+
 export const DOT = "•";
