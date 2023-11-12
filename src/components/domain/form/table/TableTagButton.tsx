@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import CloseIcon from "assets/close-white.svg";
-import { TableInfo } from "types/userType";
 import { DOT } from "constant/stringConstant";
 
 type Props = {

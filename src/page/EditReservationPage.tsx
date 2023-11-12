@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Header from "components/common/Header";
 import { HEADER_TYPE } from "constant/stringConstant";
 import styled from "styled-components";
 import CreateReservation from "components/domain/CreateReservation";
 import { useLocation } from "react-router-dom";
-import { UserInfo } from "types/userType";
 
 const EditReservationPage = () => {
   const location = useLocation();

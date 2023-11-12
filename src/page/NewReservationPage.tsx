@@ -1,7 +1,7 @@
+import React from "react";
 import Header from "components/common/Header";
 import CreateReservation from "components/domain/CreateReservation";
 import { HEADER_TYPE } from "constant/stringConstant";
-import React from "react";
 import styled from "styled-components";
 const NewReservationPage = () => {
   return (

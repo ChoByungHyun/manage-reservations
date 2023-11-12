@@ -1,5 +1,5 @@
 import { FORM_PLACEHOLDER } from "constant/stringConstant";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 type Props = {
   value: string;

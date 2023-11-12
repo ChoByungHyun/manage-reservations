@@ -1,3 +1,4 @@
+import { FORM_PLACEHOLDER } from "constant/stringConstant";
 import React, { useState } from "react";
 import styled from "styled-components";
 type Props = {
@@ -29,19 +30,20 @@ const Input: React.FC<Props> = ({
         htmlFor={label}
       >
         {label}
-        {(label === "Name" || label === "Phone") && ( // 조건부 렌더링
+        {(label === FORM_PLACEHOLDER.NAME ||
+          label === FORM_PLACEHOLDER.PHONE) && ( // 조건부 렌더링
           <SLabelRequired>*</SLabelRequired> // 다른 스타일을 적용한 아스테리스크
         )}
       </label>
       <SPlaceholder $isFocused={isFocused || value !== ""}>
         {placeholder}
-        {(label === "Name" || label === "Phone") && (
+        {(label === FORM_PLACEHOLDER.NAME ||
+          label === FORM_PLACEHOLDER.PHONE) && (
           <SLabelRequired>*</SLabelRequired>
         )}
       </SPlaceholder>
       <SInput
         id={label}
-        // placeholder={isFocused ? "" : placeholder}
         type={type}
         value={value}
         onChange={onChange}
@@ -95,11 +97,6 @@ const SInputForm = styled.form`
 
     transform: translate(0, -150%) scale(0.8);
   }
-  input:focus {
-  }
-  /* label {
-    color: var(--gray-600);
-  } */
 `;
 
 const SInput = styled.input`

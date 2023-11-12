@@ -6,10 +6,8 @@ import ButtonGroup from "../ButtonGroup";
 import TimePicker from "./TimePicker";
 import { BUTTON_TYPE } from "constant/stringConstant";
 import Calendar from "./Calendar";
-
-import "react-datepicker/dist/react-datepicker.css"; // 스타일 시트를 임포트 합니다
 import { ReservationDate } from "types/userType";
-import { formatDate } from "util/formatDate";
+import { TIME_CONFIG } from "constant/numberConstant";
 
 type Props = {
   onClose: () => void;
@@ -27,18 +25,22 @@ const SelectDateForm: React.FC<Props> = ({
   let currentHour = now.getHours();
   let currentMinute = now.getMinutes();
 
-  if (currentMinute < 30) {
-    currentMinute += 30; // 현재 분이 30분 미만이면 30분을 더함
+  if (currentMinute < TIME_CONFIG.STANDARD_MINUTE) {
+    currentMinute += TIME_CONFIG.STANDARD_MINUTE; // 현재 분이 30분 미만이면 30분을 더함
   } else {
     currentHour += 1; // 현재 분이 30분 이상이면 시간을 1시간 늘림
     currentMinute = 0; // 분은 0으로 설정
   }
 
   const [activeTab, setActiveTab] = useState("time");
-  // const [selectedDate, setSelectedDate] = useState<Date>(now); // 선택된 날짜를 관리하는 상태
-  const [hour, setHour] = useState(currentHour % 12 || 12); // 시간 (0-11)
-  const [minute, setMinute] = useState(Math.floor(currentMinute / 30) * 30); // 분 (0-30)
-  const [isPM, setIsPM] = useState(currentHour >= 12); // AM 또는 PM
+  const [hour, setHour] = useState(
+    currentHour % TIME_CONFIG.STANDARD_HOUR || TIME_CONFIG.STANDARD_HOUR
+  ); // 시간 (0-11)
+  const [minute, setMinute] = useState(
+    Math.floor(currentMinute / TIME_CONFIG.STANDARD_MINUTE) *
+      TIME_CONFIG.STANDARD_MINUTE
+  ); // 분 (0-30)
+  const [isPM, setIsPM] = useState(currentHour >= TIME_CONFIG.STANDARD_HOUR); // AM 또는 PM
   const [selectedTime, setSelectedTime] = useState<string>(""); // 선택된 시간을 관리하는 상태
   const [selectedDate, setSelectedDate] = useState<Date>(
     initialDate ? new Date(initialDate) : new Date()
@@ -51,7 +53,7 @@ const SelectDateForm: React.FC<Props> = ({
 
       setHour(initialHour);
       setMinute(initialMinute);
-      setIsPM(period === "PM");
+      setIsPM(period === TIME_CONFIG.PM);
     }
   }, []);
 
@@ -61,18 +63,18 @@ const SelectDateForm: React.FC<Props> = ({
 
   // 시간 변경 후에 handleTimeChange 호출
   const changeHour = (change: number) => {
-    const newHour = (hour + change) % 12;
-    setHour(newHour < 0 ? newHour + 12 : newHour);
+    const newHour = (hour + change) % TIME_CONFIG.STANDARD_HOUR;
+    setHour(newHour < 0 ? newHour + TIME_CONFIG.STANDARD_HOUR : newHour);
   };
 
   const changeMinute = (change: number) => {
-    const newMinute = minute + change * 30;
+    const newMinute = minute + change * TIME_CONFIG.STANDARD_MINUTE;
     if (newMinute < 0) {
-      setMinute(30);
-      changeHour(-1);
-    } else if (newMinute >= 60) {
+      setMinute(TIME_CONFIG.STANDARD_MINUTE);
+      changeHour(TIME_CONFIG.MINUS_TIME);
+    } else if (newMinute >= TIME_CONFIG.STANDARD_HOUR) {
       setMinute(0);
-      changeHour(1);
+      changeHour(TIME_CONFIG.PLUS_TIME);
     } else {
       setMinute(newMinute);
     }
@@ -84,9 +86,9 @@ const SelectDateForm: React.FC<Props> = ({
 
   const handleTimeChange = () => {
     // 시간 변경 시에 호출되는 함수
-    const time = `${hour === 0 ? 12 : hour}:${minute === 0 ? "00" : minute} ${
-      isPM ? "PM" : "AM"
-    }`;
+    const time = `${hour === 0 ? TIME_CONFIG.HOUR_CONVERT : hour}:${
+      minute === 0 ? TIME_CONFIG.MINUTE_CONVERT : minute
+    } ${isPM ? TIME_CONFIG.PM : TIME_CONFIG.AM}`;
     setSelectedTime(time);
   };
 
@@ -107,8 +109,10 @@ const SelectDateForm: React.FC<Props> = ({
         <SInputForm onClick={() => setActiveTab("time")}>
           <img src={TimerIcon} alt="시계아이콘" />
           <SInput className={activeTab === "time" ? "active-tab" : ""}>{`${
-            hour === 0 ? 12 : hour
-          }:${minute === 0 ? "00" : minute}:${isPM ? "PM" : "AM"}`}</SInput>
+            hour === 0 ? TIME_CONFIG.STANDARD_HOUR : hour
+          }:${minute === 0 ? TIME_CONFIG.MINUTE_CONVERT : minute}:${
+            isPM ? TIME_CONFIG.PM : TIME_CONFIG.AM
+          }`}</SInput>
         </SInputForm>
         <SInputForm onClick={() => setActiveTab("calendar")}>
           <img src={CalendarIcon} alt="달력아이콘" />

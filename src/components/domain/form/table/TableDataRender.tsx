@@ -1,6 +1,6 @@
 import { TableInfo } from "types/userType";
 import styled from "styled-components";
-import { DOT } from "constant/stringConstant";
+import { DOT, TABLE_INFO } from "constant/stringConstant";
 
 const TableDataRender = (tableInfo: TableInfo[]) => {
   const floorTableMap = tableInfo.reduce((acc, curr) => {
@@ -13,11 +13,12 @@ const TableDataRender = (tableInfo: TableInfo[]) => {
 
   return Object.entries(floorTableMap).map(([floor, tables], index) => (
     <SLayout key={index}>
-      Table
+      {TABLE_INFO.TABLE}
       <STableNumber>
         {tables.sort((a, b) => a - b).join(", ")}
       </STableNumber>{" "}
-      {DOT} Floor<SFloorNumber> {floor}</SFloorNumber>
+      {DOT} {TABLE_INFO.FLOOR}
+      <SFloorNumber> {floor}</SFloorNumber>
     </SLayout>
   ));
 };
@@ -33,8 +34,6 @@ const STableNumber = styled.span`
   color: var(--gray-1000);
 `;
 
-const SFloorNumber = styled.span`
-  /* font-weight: bold; */
-`;
+const SFloorNumber = styled.span``;
 
 export default TableDataRender;

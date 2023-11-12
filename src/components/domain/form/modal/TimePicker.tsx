@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import UpArrow from "assets/chevron-up.svg";
 import DownArrow from "assets/chevron-down.svg";
-import { TIME_CONFIG } from "constant/stringConstant";
+import { TIME_CONFIG } from "constant/numberConstant";
 type Props = {
   hour: number;
   minute: number;
@@ -23,21 +23,21 @@ const TimePicker: React.FC<Props> = ({
   return (
     <SLayout>
       <STimeArrow>
-        <button onClick={() => changeHour(1)}>
+        <button onClick={() => changeHour(TIME_CONFIG.PLUS_TIME)}>
           <img src={UpArrow} alt="" />
         </button>
         {hour === 0 ? TIME_CONFIG.HOUR_CONVERT : hour}
-        <button onClick={() => changeHour(-1)}>
+        <button onClick={() => changeHour(TIME_CONFIG.MINUS_TIME)}>
           <img src={DownArrow} alt="" />
         </button>
       </STimeArrow>
       <div> : </div>
       <STimeArrow>
-        <button onClick={() => changeMinute(1)}>
+        <button onClick={() => changeMinute(TIME_CONFIG.PLUS_TIME)}>
           <img src={UpArrow} alt="" />
         </button>
         {minute === 0 ? TIME_CONFIG.MINUTE_CONVERT : minute}
-        <button onClick={() => changeMinute(-1)}>
+        <button onClick={() => changeMinute(TIME_CONFIG.MINUS_TIME)}>
           <img src={DownArrow} alt="" />
         </button>
       </STimeArrow>

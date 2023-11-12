@@ -25,15 +25,10 @@ const ButtonGroup: React.FC<Props> = ({
   isModified,
 }) => {
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
-    console.log("delete");
     e.stopPropagation();
-    // userId && handleDeleteReservation(userId);
     onDelete && userId && onDelete(userId);
   }
-  async function hadleEditDelete(e: React.MouseEvent<HTMLButtonElement>) {
-    handleDelete(e);
-    await new Promise((resolve) => setTimeout(resolve, 0));
-  }
+
   function handleSeated(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
     onSeated && userId && onSeated(userId);
@@ -75,7 +70,6 @@ const SLayout = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
-  /* margin-bottom: 20px; */
 `;
 const SDeleteButton = styled.button`
   border-radius: 8px;

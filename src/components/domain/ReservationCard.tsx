@@ -10,6 +10,7 @@ import { UserInfo } from "types/userType";
 import TableDataRender from "components/domain/form/table/TableDataRender";
 import { TABLE_INFO } from "constant/stringConstant";
 import { formatDate } from "util/formatDate";
+import { PATH } from "constant/navigateConstant";
 interface Props {
   userInfo: UserInfo;
   onDelete: (id: string) => void;
@@ -19,7 +20,7 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
   const navigate = useNavigate();
 
   function handleGoEditPage(userInfo: UserInfo) {
-    navigate("/edit", { state: userInfo });
+    navigate(PATH.EDIT, { state: userInfo });
   }
 
   const userDate = formatDate(new Date(userInfo.date.date));
@@ -64,13 +65,7 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
         </SFlex>
         <SFlex>
           <SNoteLayout>
-            {userInfo.note.length === 0 ? (
-              <>
-                {/* <div>{FORM_PLACEHOLDER.EMPTY_NOTE}</div> */}
-                {/* <img src={NoteIcon} alt="" /> */}
-                <SNote>{userInfo.note}</SNote>
-              </>
-            ) : (
+            {userInfo.note.length !== 0 && (
               <>
                 <SNote>{userInfo.note}</SNote>
                 <img src={NoteIcon} alt="" />
@@ -169,6 +164,7 @@ const SNote = styled.div`
 `;
 const SNoteLayout = styled(STextAlign)`
   height: 15px;
+  margin-bottom: 5px;
 `;
 
 export default ReservationCard;

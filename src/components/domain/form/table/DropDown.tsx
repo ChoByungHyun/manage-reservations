@@ -142,12 +142,12 @@ function DropDown({
       <SDropdownList $isOpen={isDropdownOpen}>
         {Object.values(itemsByFloor).map((itemsInFloor, index) => (
           <SFloorContainer key={index}>
-            <SFloorTitle>{`Floor ${itemsInFloor[0].floor}`}</SFloorTitle>
+            <SFloorTitle>{`${TABLE_INFO.FLOOR} ${itemsInFloor[0].floor}`}</SFloorTitle>
             <STableButtonsContainer>
               {itemsInFloor.map((item, index) => (
                 <TableTagButton
                   key={index}
-                  text={`Table ${item.table}`}
+                  text={`${TABLE_INFO.TABLE} ${item.table}`}
                   showDot={false}
                   active={selectedItems.some(
                     (selectedItem) =>
@@ -216,7 +216,6 @@ const SButton = styled.button<DropdownListProps>`
   gap: 20px;
   padding: 16px;
   color: var(--gray-800);
-  /* ${(props) => props.$isOpen && `border : 1px solid var(--primary)`} */
 `;
 
 const SArrowIconWrapper = styled.div<DropdownListProps>`
@@ -245,7 +244,6 @@ const SDropdownList = styled.div<DropdownListProps>`
   `
       : `display:none;`}
 `;
-// 스타일 컴포넌트
 const SFloorContainer = styled.div`
   display: flex;
   flex-direction: column;

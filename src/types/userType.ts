@@ -16,5 +16,4 @@ export interface ReservationDate {
 export interface TableInfo {
   table: number;
   floor: number;
-  reserved: boolean;
 }

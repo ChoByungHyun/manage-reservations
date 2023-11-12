@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import plusIcon from "assets/math-plus.svg";
 import minusIcon from "assets/math-minus.svg";
 import { FORM_PLACEHOLDER } from "constant/stringConstant";
+import { GUEST_CONFIG } from "constant/numberConstant";
 type Props = {
   onCount: (value: number) => void;
   guest: number;
@@ -11,11 +12,17 @@ const GuestCounter: React.FC<Props> = ({ onCount, guest }) => {
   return (
     <SLayout>
       <div>{FORM_PLACEHOLDER.GUEST}</div>
-      <SIconLayout $disabled={guest === 1} onClick={() => onCount(-1)}>
+      <SIconLayout
+        $disabled={guest === GUEST_CONFIG.MIN_GUEST}
+        onClick={() => onCount(GUEST_CONFIG.MINUS_GUEST)}
+      >
         <img src={minusIcon} alt="마이너스 아이콘" />
       </SIconLayout>
       <p>{guest}</p>
-      <SIconLayout $disabled={guest === 99} onClick={() => onCount(1)}>
+      <SIconLayout
+        $disabled={guest === GUEST_CONFIG.MAX_GUEST}
+        onClick={() => onCount(GUEST_CONFIG.PLUS_GUEST)}
+      >
         <img src={plusIcon} alt="플러스 아이콘" />
       </SIconLayout>
     </SLayout>

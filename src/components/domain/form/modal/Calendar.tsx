@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import styled from "styled-components";
-import { parseISO } from "date-fns";
-import "react-datepicker/dist/react-datepicker.css"; // 스타일 시트를 임포트 합니다
+import "react-datepicker/dist/react-datepicker.css";
+import { DATE_FORMAT } from "constant/stringConstant";
 type Props = {
   onSelectDate: (date: Date) => void;
   activeTab: string;
@@ -31,7 +31,7 @@ const Calendar: React.FC<Props> = ({
         minDate={new Date()}
         selected={selectedDate}
         onChange={handleChange}
-        dateFormat="MMMM dd"
+        dateFormat={DATE_FORMAT.CALENDAR_FORMAT}
       />
     </SCalendarLayout>
   );

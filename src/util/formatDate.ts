@@ -1,3 +1,5 @@
+import { DATE_FORMAT } from "constant/stringConstant";
+
 export const formatDate = (date: Date) => {
   const months = [
     "January",
@@ -23,7 +25,7 @@ export const formatDate = (date: Date) => {
   };
 
   if (isToday(date)) {
-    return "Today";
+    return DATE_FORMAT.TODAY;
   }
 
   const month = months[date.getMonth()];

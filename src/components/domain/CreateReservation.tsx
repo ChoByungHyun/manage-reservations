@@ -14,6 +14,10 @@ import { ReservationDate, TableInfo, UserInfo } from "types/userType";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "util/formatDate";
 import { userPhoneValidate } from "util/userPhoneValidate";
+import { GUEST_CONFIG, NAME_CONFIG } from "constant/numberConstant";
+import { convertTimeToHourAndMinute } from "util/sortReservationTime";
+import { PATH } from "constant/navigateConstant";
+import { ALERT_MESSAGE } from "constant/messageConstant";
 interface Props {
   userInfo?: UserInfo;
 }
@@ -54,8 +58,8 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     } else {
       setIsInputValid(false);
     }
-    if (name.length >= 15) {
-      alert("이름은 15글자 이하여야합니다!");
+    if (name.length >= NAME_CONFIG.MAX_LENGTH) {
+      alert(ALERT_MESSAGE.NAME_LENGTH);
       setIsInputValid(false);
     }
   }, [name, phone, date]);
@@ -150,10 +154,13 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   }
 
   function handleGuestCounter(value: number) {
-    if (guest === 1 && value === -1) {
+    if (
+      guest === GUEST_CONFIG.MIN_GUEST &&
+      value === GUEST_CONFIG.MINUS_GUEST
+    ) {
       return;
     }
-    if (guest === 99 && value === 1) {
+    if (guest === GUEST_CONFIG.MAX_GUEST && value === GUEST_CONFIG.PLUS_GUEST) {
       return;
     }
     setGuest((prevGuest) => prevGuest + value);
@@ -173,9 +180,28 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     setPhone(value);
   };
 
+  function pastDateValidate() {
+    const selectedDateTime = new Date(date.date);
+    const [selectedHour, selectedMinute] = convertTimeToHourAndMinute(
+      date.time
+    );
+    selectedDateTime.setHours(selectedHour, selectedMinute);
+    const currentDateTime = new Date();
+
+    if (selectedDateTime < currentDateTime) {
+      alert(ALERT_MESSAGE.PAST_DATE);
+      closeModal();
+      return false;
+    }
+    return true;
+  }
+
   async function storageSaveUserInfo() {
     //Save Button 눌렀을 때 객체형태로 Array저장하는 함수
     const uniqueID = uuidv4();
+
+    const dateValidate = pastDateValidate();
+    if (!dateValidate) return;
 
     const userInfoData: UserInfo = {
       id: uniqueID,
@@ -215,7 +241,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
     localStorage.setItem("userInfo", JSON.stringify(updatedArray));
     // 상태 || 스토리지 업데이트 전 navigate 이슈로 추가
     await new Promise((resolve) => setTimeout(resolve, 0));
-    navigate("/");
+    navigate(PATH.LIST);
   }
 
   async function handleDeleteReservation(id: string) {
@@ -306,10 +332,7 @@ const SInputLayout = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* height: 40px; */
-  /* border: 1px solid var(--gray-400); */
   border-radius: 5px;
-  /* align-self: center; */
   flex: 1;
   cursor: pointer;
   background-color: var(--gray-200);
