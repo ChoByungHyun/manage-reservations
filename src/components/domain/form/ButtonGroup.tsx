@@ -79,7 +79,7 @@ const SDeleteButton = styled.button`
 
   box-shadow: var(--box-shadow);
   &:hover {
-    scale: 1.02;
+    /* scale: 1.02; */
   }
 `;
 const SConfirmButton = styled.button`
@@ -97,13 +97,13 @@ const SConfirmButton = styled.button`
   color: white;
   font-size: 16px;
   &:hover {
-    scale: 1.01;
+    /* scale: 1.01; */
   }
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     &:hover {
-      scale: 1;
+      /* scale: 1; */
     }
   }
 `;

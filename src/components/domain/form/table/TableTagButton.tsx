@@ -98,7 +98,7 @@ const STagButton = styled.div<ButtonTagProps>`
   `}
   }
   &:hover {
-    scale: ${(props) => (props.$active ? 1 : 1.01)};
+    /* scale: ${(props) => (props.$active ? 1 : 1.01)}; */
   }
 `;
 

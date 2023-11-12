@@ -18,3 +18,6 @@ export const TIME_CONFIG = {
 export const NAME_CONFIG = {
   MAX_LENGTH: 15,
 };
+export const NOTE_CONFIG = {
+  MAX_LENGTH: 200,
+};
