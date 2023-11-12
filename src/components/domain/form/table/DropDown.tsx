@@ -46,7 +46,7 @@ function DropDown({
 
   useEffect(() => {
     if (isTableReset) setSelectedItems([]);
-    setInitialSelectedItems([]);
+    // setInitialSelectedItems([]);
   }, [isTableReset]);
 
   useEffect(() => {
