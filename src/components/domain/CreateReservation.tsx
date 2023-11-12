@@ -35,11 +35,13 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
   const [guest, setGuest] = useState(1);
   const [table, setTable] = useState<TableInfo[]>([]);
   const [note, setNote] = useState("");
-  const [isSeat, setIsSeat] = useState(false);
   const [userInfoArray, setUserInfoArray] = useState<UserInfo[]>([]);
+  const [isSeat, setIsSeat] = useState(false);
   const [isInputValid, setIsInputValid] = useState(false);
   const [isModified, setIsModified] = useState(false);
   const [isTableReset, setIsTableReset] = useState(false);
+  const [isDateValid, setIsDateValid] = useState(false);
+
   const navigate = useNavigate();
   useEffect(() => {
     // 로컬 스토리지에서 데이터 가져오기
@@ -50,10 +52,19 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
       setUserInfoArray(parsedData);
     }
   }, []);
+  useEffect(() => {
+    if (date.date && date.time) {
+    }
+  }, [date]);
 
   useEffect(() => {
-    // 필수 입력 항목 validate
+    if (date.date && date.time) {
+      setIsDateValid(true);
+    } else {
+      setIsDateValid(false);
+    }
     if (name && phone && date.date && date.time) {
+      // 필수 입력 항목 validate
       setIsInputValid(true);
     } else {
       setIsInputValid(false);
@@ -310,6 +321,7 @@ const CreateReservation: React.FC<Props> = ({ userInfo }) => {
           onTableUpdate={handleTableUpdate}
           isDisabled={isDuplicateReservation}
           isTableReset={isTableReset}
+          isDateValid={!isDateValid}
         />
       </SReservation>
       <TextArea value={note} onChange={handleUpdateNote} />

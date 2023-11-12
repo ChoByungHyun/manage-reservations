@@ -11,6 +11,7 @@ type DropdownProps = {
   onTableUpdate: (selectedItems: TableInfo[]) => void;
   isDisabled: (table: TableInfo, selectedItems: TableInfo[]) => boolean;
   isTableReset: boolean;
+  isDateValid: boolean;
 };
 
 function DropDown({
@@ -19,6 +20,7 @@ function DropDown({
   table,
   isDisabled,
   isTableReset,
+  isDateValid,
 }: DropdownProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isInitial, setIsInitial] = useState<boolean>(true);
@@ -108,12 +110,13 @@ function DropDown({
   );
 
   return (
-    <SDropdownContainer ref={dropdownRef}>
+    <SDropdownContainer $isDisable={isDateValid} ref={dropdownRef}>
       <SButton
         onClick={() => {
           setIsDropdownOpen((prev) => !prev);
         }}
-        $isOpen={isDropdownOpen}
+        disabled={isDateValid}
+        $isDisable={isDateValid}
       >
         <STagButtonLayout
           className={selectedItems.length > 0 ? "has-items" : ""}
@@ -169,6 +172,9 @@ function DropDown({
 type DropdownListProps = {
   $isOpen: boolean;
 };
+type DropdownLayoutProps = {
+  $isDisable: boolean;
+};
 const STablePlaceholder = styled.div`
   padding-left: 6px;
 `;
@@ -201,11 +207,12 @@ const STagButtonLayout = styled.div`
     opacity: 1;
   }
 `;
-const SDropdownContainer = styled.div`
+const SDropdownContainer = styled.div<DropdownLayoutProps>`
   border-radius: 5px;
+  opacity: ${(props) => (props.$isDisable ? 0.5 : 1)};
 `;
 
-const SButton = styled.button<DropdownListProps>`
+const SButton = styled.button<DropdownLayoutProps>`
   width: 540px;
   height: 50px;
   border: 1px solid var(--gray-400);
@@ -216,6 +223,8 @@ const SButton = styled.button<DropdownListProps>`
   gap: 20px;
   padding: 16px;
   color: var(--gray-800);
+  opacity: ${(props) => (props.$isDisable ? 0.5 : 1)};
+  cursor: ${(props) => (props.$isDisable ? "not-allowed" : "pointer")};
 `;
 
 const SArrowIconWrapper = styled.div<DropdownListProps>`
