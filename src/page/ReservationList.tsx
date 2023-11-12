@@ -6,17 +6,35 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import SLayout from "styles/SLayout";
 import { UserInfo } from "types/userType";
-import { sortReservationTime } from "util/sortReservationTime";
+import {
+  convertTimeToHourAndMinute,
+  sortReservationTime,
+} from "util/sortReservationTime";
 const ReservationList = () => {
   const { userInfoArray, handleDeleteReservation, handleSetSeatTrue } =
     useReservation();
-  const sortedReservationCard = sortReservationTime(userInfoArray);
 
+  const [validReservations, setValidReservations] = useState<UserInfo[]>([]);
   const [validCardCount, setValidCardCount] = useState(0);
+
   useEffect(() => {
-    const count = sortedReservationCard.filter((info) => !info.isSeat).length;
-    setValidCardCount(count);
-  }, [sortedReservationCard]);
+    const sortedReservationCard = sortReservationTime(userInfoArray);
+
+    const validRes = sortedReservationCard.filter((info) => {
+      const reservationDate = new Date(info.date.date);
+      const [reservationHour, reservationMinute] = convertTimeToHourAndMinute(
+        info.date.time
+      );
+      const reservationDateTime = new Date(
+        reservationDate.setHours(reservationHour, reservationMinute)
+      );
+
+      return reservationDateTime >= new Date() && !info.isSeat;
+    });
+
+    setValidReservations(validRes);
+    setValidCardCount(validRes.length);
+  }, [userInfoArray]);
 
   return (
     <SGrayLayout>
@@ -25,18 +43,14 @@ const ReservationList = () => {
         validCardCount={validCardCount}
       />
       <SCardLayout>
-        {sortedReservationCard.map((info) => {
-          if (!info.isSeat) {
-            return (
-              <ReservationCard
-                key={info.id}
-                userInfo={info}
-                onDelete={handleDeleteReservation}
-                onSeated={handleSetSeatTrue}
-              />
-            );
-          }
-        })}
+        {validReservations.map((info) => (
+          <ReservationCard
+            key={info.id}
+            userInfo={info}
+            onDelete={handleDeleteReservation}
+            onSeated={handleSetSeatTrue}
+          />
+        ))}
       </SCardLayout>
     </SGrayLayout>
   );
