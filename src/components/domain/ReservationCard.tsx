@@ -8,7 +8,7 @@ import ButtonGroup from "./form/ButtonGroup";
 import { useNavigate } from "react-router-dom";
 import { UserInfo } from "types/userType";
 import TableDataRender from "components/domain/form/table/TableDataRender";
-import { FORM_PLACEHOLDER, TABLE_INFO } from "constant/stringConstant";
+import { TABLE_INFO } from "constant/stringConstant";
 import { formatDate } from "util/formatDate";
 interface Props {
   userInfo: UserInfo;
@@ -17,12 +17,12 @@ interface Props {
 }
 const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
   const navigate = useNavigate();
+
   function handleGoEditPage(userInfo: UserInfo) {
     navigate("/edit", { state: userInfo });
   }
 
   const userDate = formatDate(new Date(userInfo.date.date));
-
   return (
     <>
       <SLayout onClick={() => handleGoEditPage(userInfo)}>
@@ -63,19 +63,20 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
           </STableLayout>
         </SFlex>
         <SFlex>
-          <STextAlign>
+          <SNoteLayout>
             {userInfo.note.length === 0 ? (
               <>
-                <div>{FORM_PLACEHOLDER.EMPTY_NOTE}</div>
-                <img src={NoteIcon} alt="" />
+                {/* <div>{FORM_PLACEHOLDER.EMPTY_NOTE}</div> */}
+                {/* <img src={NoteIcon} alt="" /> */}
+                <SNote>{userInfo.note}</SNote>
               </>
             ) : (
               <>
-                <div>{userInfo.note}</div>
+                <SNote>{userInfo.note}</SNote>
                 <img src={NoteIcon} alt="" />
               </>
             )}
-          </STextAlign>
+          </SNoteLayout>
         </SFlex>
         <SButtonGroup>
           <ButtonGroup
@@ -88,6 +89,7 @@ const ReservationCard: React.FC<Props> = ({ userInfo, onDelete, onSeated }) => {
     </>
   );
 };
+
 const STableInfoLayout = styled.div`
   display: flex;
   gap: 5px;
@@ -118,7 +120,8 @@ const STableLayout = styled.div`
   display: flex;
   gap: 5px;
   color: var(--gray-800);
-  align-items: center;
+  align-items: flex-start;
+  height: 40px;
 `;
 const SButtonGroup = styled.div`
   width: 100%;
@@ -144,18 +147,28 @@ const SFlex = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: center;
-  padding: 10px 6px;
+  padding: 8px 6px;
   box-sizing: border-box;
 `;
 const SLayout = styled(SFlex)`
   flex-direction: column;
   width: 95%;
   gap: 3px;
+  margin-bottom: 12px;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
   background-color: white;
   border-radius: 5px;
   box-sizing: border-box;
   cursor: pointer;
+`;
+const SNote = styled.div`
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+const SNoteLayout = styled(STextAlign)`
+  height: 15px;
 `;
 
 export default ReservationCard;

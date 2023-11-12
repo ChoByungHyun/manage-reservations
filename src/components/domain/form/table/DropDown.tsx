@@ -228,7 +228,7 @@ const SDropdownList = styled.div<DropdownListProps>`
   position: absolute;
   border: 1px solid var(--gray-400);
   width: 540px;
-  height: 150px;
+  height: 180px;
   overflow-y: scroll;
   border-radius: 5px;
   background-color: var(--white);

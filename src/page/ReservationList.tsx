@@ -44,7 +44,8 @@ const ReservationList = () => {
 const SCardLayout = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  /* gap: 10px; */
+
   align-items: center;
   justify-items: start;
   max-height: 70vh;
